@@ -1,0 +1,14 @@
+# create .jar executable
+FROM maven:3.9.9-eclipse-temurin-24 AS builder
+WORKDIR /home/fcm-ms/token-api
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src src
+RUN mvn clean package -DskipTests
+
+# run
+FROM eclipse-temurin:24
+WORKDIR /home/fcm-ms/token-api
+COPY --from=builder /home/fcm-ms/token-api/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]

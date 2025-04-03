@@ -28,6 +28,8 @@
 	</scm>
 	<properties>
 		<java.version>24</java.version>
+    <postgresql.version>42.7.5</postgresql.version>
+    <lombok.version>1.18.38</lombok.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -42,13 +44,14 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
-      <version>1.18.38</version>
+      <version>${lombok.version}</version>
       <scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -68,7 +71,7 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-              <version>1.18.38</version>
+              <version>${lombok.version}</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>

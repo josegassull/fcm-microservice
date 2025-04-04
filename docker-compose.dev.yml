@@ -8,8 +8,8 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "8080:8080"
-    links:
-      - fcm-ms-db
+    # links: # deprecated
+    #   - fcm-ms-db
     volumes:
       - ./token-api/src:/home/fcm-ms/src
     networks:

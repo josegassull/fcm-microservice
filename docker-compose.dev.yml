@@ -11,7 +11,7 @@ services:
     # links: # deprecated
     #   - fcm-ms-db
     volumes:
-      - ./token-api/src:/home/fcm-ms/src
+      - ./token-api/src:/home/fcm-ms/token-api/src
     networks:
       - fcm-ms-network
     environment:

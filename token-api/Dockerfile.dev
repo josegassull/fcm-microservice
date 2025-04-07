@@ -1,14 +1,12 @@
-# create .jar executable
-FROM maven:3.9.9-eclipse-temurin-24 AS builder
-WORKDIR /home/fcm-ms/token-api
-COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY src src
-RUN mvn clean package -DskipTests
+FROM maven:3.9.9-eclipse-temurin-24
 
-# run
-FROM eclipse-temurin:24
 WORKDIR /home/fcm-ms/token-api
-COPY --from=builder /home/fcm-ms/token-api/target/*.jar app.jar
+COPY .mvn .mvn
+COPY mvnw .
+COPY pom.xml .
+RUN ./mvnw dependency:go-offline
+
+COPY src src
+COPY docker-entrypoint.sh .
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]

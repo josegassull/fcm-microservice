@@ -2,14 +2,14 @@ package com.fcm_ms.token_api.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("api")
-public class HelloWorldController {
+public class TokenController {
 
-  @GetMapping("hello-world")
-  public String get() {
-    return "Hello world!";
+  @PostMapping("register")
+  public String registerNewToken() {
+    return "Hello register token";
   }
 }

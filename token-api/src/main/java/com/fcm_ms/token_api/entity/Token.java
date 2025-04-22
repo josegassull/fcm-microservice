@@ -13,14 +13,12 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "fcm_token")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Token {

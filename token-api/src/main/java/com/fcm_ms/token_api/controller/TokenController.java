@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 
 import com.fcm_ms.token_api.dto.TokenRequest;
 import com.fcm_ms.token_api.service.TokenService;
@@ -17,7 +18,7 @@ public class TokenController {
   private final TokenService tokenService;
 
   @PostMapping("register")
-  public String registerNewToken(@RequestBody TokenRequest tokenRequest) {
+  public String registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
     return "Hello register token. Request: " + tokenService.registerToken(tokenRequest);
   }
 }

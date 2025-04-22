@@ -16,6 +16,6 @@ public class TokenRequest {
   @NotBlank(message = "Device type is required")
   private String deviceType;
 
-  @NotNull(message = "A user ID is required")
+  @NotNull(message = "User ID is required")
   private Integer userExternalId;
 }

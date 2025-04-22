@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
     ErrorResponse errorResponse = ErrorResponse.of(
       HttpStatus.BAD_REQUEST.value(),
-      "Invalid fields error",
+      "Invalid fields",
       errors,
       request.getRequestURI()
     );

@@ -27,6 +27,7 @@ public class ErrorResponse {
     return ErrorResponse.builder()
       .timestamp(LocalDateTime.now())
       .status(status)
+      .error(error)
       .errors(errors)
       .path(path)
       .build();

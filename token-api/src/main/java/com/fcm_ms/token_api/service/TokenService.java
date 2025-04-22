@@ -1,5 +1,6 @@
 package com.fcm_ms.token_api.service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -23,9 +24,17 @@ public class TokenService {
 
   public String registerToken(TokenRequest tokenRequest) {
     /* TODO save user and device relationship */
+    Integer xid = tokenRequest.getUserExternalId();
     Optional<User> user = this.userRepository.findByExternalId(
-      tokenRequest.getUserExternalId()
+        xid
     );
+
+    Boolean isPresent = user.isPresent();
+    if (!isPresent)
+      this.userRepository.save(User.builder()
+          .externalId(xid)
+          .build()
+          );
 
     Token token = this.tokenMapper.toEntity(tokenRequest);
 
@@ -33,9 +42,9 @@ public class TokenService {
 
     // return "Hello from TokenService!! user: " + user.toString();
 
-    if (user.isPresent())
+    if (isPresent)
       return "User exists!" + user.get().toString();
     else
-      return "User with " + tokenRequest.getUserExternalId() + " does not exist";
+      return "User with " + xid + " does not exist";
   }
 }

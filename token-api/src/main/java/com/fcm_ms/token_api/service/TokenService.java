@@ -12,19 +12,21 @@ import com.fcm_ms.token_api.entity.Token;
 import com.fcm_ms.token_api.entity.User;
 import com.fcm_ms.token_api.repository.TokenRepository;
 import com.fcm_ms.token_api.repository.UserRepository;
+import com.fcm_ms.token_api.service.UserService;
 
 @Service
 @RequiredArgsConstructor
 public class TokenService {
 
   private final TokenRepository tokenRepository;
-  private final UserRepository userRepository;
 
   private final TokenMapper tokenMapper;
 
+  private final UserService userService;
+
   /* TODO transactional */
   public String registerToken(TokenRequest tokenRequest) {
-    User user = this.userRepository.findByExternalIdOrCreate(tokenRequest.getUserExternalId());
+    User user = this.userService.findByExternalIdOrCreate(tokenRequest.getUserExternalId());
 
     Token token = this.tokenMapper.toEntity(tokenRequest);
 

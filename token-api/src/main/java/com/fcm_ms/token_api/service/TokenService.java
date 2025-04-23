@@ -12,6 +12,8 @@ import com.fcm_ms.token_api.mapper.TokenMapper;
 import com.fcm_ms.token_api.entity.Device;
 import com.fcm_ms.token_api.entity.Token;
 import com.fcm_ms.token_api.entity.User;
+import com.fcm_ms.token_api.enums.DeviceType;
+import com.fcm_ms.token_api.repository.DeviceRepository;
 import com.fcm_ms.token_api.repository.TokenRepository;
 import com.fcm_ms.token_api.repository.UserRepository;
 import com.fcm_ms.token_api.service.UserService;
@@ -21,6 +23,7 @@ import com.fcm_ms.token_api.service.UserService;
 public class TokenService {
 
   private final TokenRepository tokenRepository;
+  private final DeviceRepository deviceRepository;
 
   private final TokenMapper tokenMapper;
 
@@ -34,7 +37,7 @@ public class TokenService {
 
     Token savedToken = this.tokenRepository.save(token);
 
-    return "Entity device: " + Device.builder()
-      .uuid("DIOAJSDOISAJDO").build().toString();
+    return "Entity device: " + this.deviceRepository.save(Device.builder()
+      .type(DeviceType.Android).uuid("DIOAJSDOISAJDO").build()).toString();
   }
 }

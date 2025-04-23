@@ -3,6 +3,8 @@ package com.fcm_ms.token_api.entity;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,6 +20,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import com.fcm_ms.token_api.enums.DeviceType;
+import com.fcm_ms.token_api.enums.DeviceTypeConverter;
 
 @Entity
 @Data
@@ -35,7 +38,7 @@ public class Device {
   private String uuid;
 
   @Enumerated(EnumType.STRING)
-  @Column(columnDefinition = "device_type")
+  @Column(name = "type", columnDefinition = "device_type")
   private DeviceType type;
 
   @Column(name = "created_at")

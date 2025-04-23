@@ -2,7 +2,8 @@ CREATE TABLE registered_user (
   id SERIAL PRIMARY KEY,
   external_id INTEGER NOT NULL, -- backoffice user id
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(external_id)
 );
 
 CREATE TYPE device_type AS ENUM ('Android', 'iOS', 'other');
@@ -12,7 +13,8 @@ CREATE TABLE device (
   uuid VARCHAR(255) NOT NULL,
   type device_type DEFAULT 'other',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(uuid)
 );
 
 CREATE TABLE fcm_token (

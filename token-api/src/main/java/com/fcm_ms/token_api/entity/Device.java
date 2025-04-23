@@ -38,7 +38,6 @@ public class Device {
   private String uuid;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "type", columnDefinition = "device_type")
   private DeviceType type;
 
   @Column(name = "created_at")

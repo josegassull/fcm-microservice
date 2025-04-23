@@ -18,7 +18,7 @@ public class DeviceService {
   @Transactional
   public Device getFromTokenRequest(TokenRequest tokenRequest) {
     Device device = Device.builder()
-      .type(DeviceType.Android)
+      .type(DeviceType.valueOf(tokenRequest.getDeviceType()))
       .uuid(tokenRequest.getDeviceUuid())
       .build();
 

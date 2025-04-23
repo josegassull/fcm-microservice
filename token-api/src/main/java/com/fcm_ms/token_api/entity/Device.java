@@ -1,7 +1,6 @@
 package com.fcm_ms.token_api.entity;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -52,15 +51,5 @@ public class Device {
   @PreUpdate
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();
-  }
-
-  public static Device of(
-      String uuid,
-      String type) {
-
-    return Device.builder()
-      .uuid(uuid)
-      .type(type)
-      .build();
   }
 }

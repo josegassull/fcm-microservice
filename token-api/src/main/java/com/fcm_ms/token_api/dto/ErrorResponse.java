@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ErrorResponse {
+
   private LocalDateTime timestamp;
   private int status;
   private String error;

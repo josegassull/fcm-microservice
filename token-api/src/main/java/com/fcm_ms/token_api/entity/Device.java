@@ -3,8 +3,6 @@ package com.fcm_ms.token_api.entity;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Converter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,7 +18,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import com.fcm_ms.token_api.enums.DeviceType;
-import com.fcm_ms.token_api.enums.DeviceTypeConverter;
 
 @Entity
 @Data
@@ -55,5 +52,15 @@ public class Device {
   @PreUpdate
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();
+  }
+
+  public static Device of(
+      String uuid,
+      String type) {
+
+    return Device.builder()
+      .uuid(uuid)
+      .type(type)
+      .build();
   }
 }

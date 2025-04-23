@@ -22,17 +22,9 @@ public class TokenService {
 
   private final TokenMapper tokenMapper;
 
+  /* TODO transactional */
   public String registerToken(TokenRequest tokenRequest) {
-    User user = this.userRepository.findByExternalId(
-      tokenRequest.getUserExternalId()
-    ).orElseGet(() -> {
-      User newUser = User.builder()
-        .externalId(tokenRequest.getUserExternalId())
-        .build();
-
-      return this.userRepository.save(newUser);
-    });
-
+    User user = this.userRepository.findByExternalIdOrCreate(tokenRequest.getUserExternalId());
 
     Token token = this.tokenMapper.toEntity(tokenRequest);
 

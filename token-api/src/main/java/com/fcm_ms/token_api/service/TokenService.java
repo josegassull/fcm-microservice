@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+import jakarta.transaction.Transactional;
 
 import com.fcm_ms.token_api.dto.TokenRequest;
 import com.fcm_ms.token_api.mapper.TokenMapper;
@@ -24,7 +25,7 @@ public class TokenService {
 
   private final UserService userService;
 
-  /* TODO transactional */
+  @Transactional
   public String registerToken(TokenRequest tokenRequest) {
     User user = this.userService.findByExternalIdOrCreate(tokenRequest.getUserExternalId());
 

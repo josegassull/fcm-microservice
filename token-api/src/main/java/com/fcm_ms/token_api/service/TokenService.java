@@ -23,28 +23,21 @@ public class TokenService {
   private final TokenMapper tokenMapper;
 
   public String registerToken(TokenRequest tokenRequest) {
-    /* TODO save user and device relationship */
-    Integer xid = tokenRequest.getUserExternalId();
-    Optional<User> user = this.userRepository.findByExternalId(
-        xid
-    );
+    User user = this.userRepository.findByExternalId(
+      tokenRequest.getUserExternalId()
+    ).orElseGet(() -> {
+      User newUser = User.builder()
+        .externalId(tokenRequest.getUserExternalId())
+        .build();
 
-    Boolean isPresent = user.isPresent();
-    if (!isPresent)
-      this.userRepository.save(User.builder()
-          .externalId(xid)
-          .build()
-          );
+      return this.userRepository.save(newUser);
+    });
+
 
     Token token = this.tokenMapper.toEntity(tokenRequest);
 
     Token savedToken = this.tokenRepository.save(token);
 
-    // return "Hello from TokenService!! user: " + user.toString();
-
-    if (isPresent)
-      return "User exists!" + user.get().toString();
-    else
-      return "User with " + xid + " does not exist";
+    return "SavedUser: " + user.toString();
   }
 }

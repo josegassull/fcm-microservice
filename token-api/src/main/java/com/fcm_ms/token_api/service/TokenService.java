@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 
 import com.fcm_ms.token_api.dto.TokenRequest;
 import com.fcm_ms.token_api.mapper.TokenMapper;
+import com.fcm_ms.token_api.entity.Device;
 import com.fcm_ms.token_api.entity.Token;
 import com.fcm_ms.token_api.entity.User;
 import com.fcm_ms.token_api.repository.TokenRepository;
@@ -33,6 +34,7 @@ public class TokenService {
 
     Token savedToken = this.tokenRepository.save(token);
 
-    return "SavedUser: " + user.toString();
+    return "Entity device: " + Device.builder()
+      .uuid("DIOAJSDOISAJDO").build().toString();
   }
 }

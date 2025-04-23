@@ -7,6 +7,8 @@ public class DeviceTypeValidator implements ConstraintValidator<ValidDeviceType,
 
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
+    if (value == null)
+      return false;
     switch (value) {
       case "Android":
       case "iOS":

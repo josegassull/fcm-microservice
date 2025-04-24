@@ -46,4 +46,8 @@ public class User {
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();
   }
+
+  public static User of(Integer externalId) {
+    return User.builder().externalId(externalId).build();
+  }
 }

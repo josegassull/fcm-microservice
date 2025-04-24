@@ -30,13 +30,13 @@ public class TokenService {
 
   @Transactional
   public String registerToken(TokenRequest tokenRequest) {
-    User user = this.userService.findByExternalIdOrCreate(tokenRequest.getUserExternalId());
+    User user = this.userService.getFromTokenRequest(tokenRequest);
     Device device = this.deviceService.getFromTokenRequest(tokenRequest);
 
     Token token = this.tokenMapper.toEntity(tokenRequest);
 
     Token savedToken = this.tokenRepository.save(token);
 
-    return "Saved device: " + device.toString();
+    return "user with new method: " + user.toString();
   }
 }

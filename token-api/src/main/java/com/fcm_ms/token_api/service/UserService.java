@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import jakarta.transaction.Transactional;
 
+import com.fcm_ms.token_api.dto.TokenRequest;
 import com.fcm_ms.token_api.entity.User;
 import com.fcm_ms.token_api.repository.UserRepository;
 
@@ -14,10 +15,10 @@ public class UserService {
   private final UserRepository userRepository;
 
   @Transactional
-  public User findByExternalIdOrCreate(Integer externalId) {
+  public User getFromTokenRequest(TokenRequest tokenRequest) {
+    Integer externalId = tokenRequest.getUserExternalId();
+
     return this.userRepository.findByExternalId(externalId)
-      .orElseGet(() -> this.userRepository.save(User.builder()
-        .externalId(externalId).build()
-      ));
+      .orElseGet(() -> this.userRepository.save(User.of(externalId)));
   }
 }

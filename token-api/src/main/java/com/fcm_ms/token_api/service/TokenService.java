@@ -12,7 +12,6 @@ import com.fcm_ms.token_api.mapper.TokenMapper;
 import com.fcm_ms.token_api.entity.Device;
 import com.fcm_ms.token_api.entity.Token;
 import com.fcm_ms.token_api.entity.User;
-import com.fcm_ms.token_api.enums.DeviceType;
 import com.fcm_ms.token_api.repository.TokenRepository;
 import com.fcm_ms.token_api.service.DeviceService;
 import com.fcm_ms.token_api.service.UserService;
@@ -30,13 +29,14 @@ public class TokenService {
 
   @Transactional
   public String registerToken(TokenRequest tokenRequest) {
-    User user = this.userService.getFromTokenRequest(tokenRequest);
+    User   user   = this.userService.getFromTokenRequest(tokenRequest);
     Device device = this.deviceService.getFromTokenRequest(tokenRequest);
 
     Token token = this.tokenMapper.toEntity(tokenRequest);
 
     Token savedToken = this.tokenRepository.save(token);
 
-    return "user with new method: " + user.toString();
+    return "User: " + user.toString() + " | Device: " + device.toString()
+      + " | Token: " + token.toString() + " | SavedToken: " + savedToken.toString();
   }
 }

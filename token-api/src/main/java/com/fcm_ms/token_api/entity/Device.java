@@ -52,4 +52,14 @@ public class Device {
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();
   }
+
+  public static Device of(
+      String uuid,
+      String type) {
+
+    return Device.builder()
+      .uuid(uuid)
+      .type(DeviceType.valueOf(type))
+      .build();
+  }
 }

@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 import com.fcm_ms.token_api.dto.TokenRequest;
 import com.fcm_ms.token_api.entity.Device;
-import com.fcm_ms.token_api.enums.DeviceType;
 import com.fcm_ms.token_api.repository.DeviceRepository;
 
 @Service
@@ -17,10 +16,10 @@ public class DeviceService {
 
   @Transactional
   public Device getFromTokenRequest(TokenRequest tokenRequest) {
-    Device device = Device.builder()
-      .type(DeviceType.valueOf(tokenRequest.getDeviceType()))
-      .uuid(tokenRequest.getDeviceUuid())
-      .build();
+    Device device = Device.of(
+      tokenRequest.getDeviceUuid(),
+      tokenRequest.getDeviceType()
+    );
 
     return this.deviceRepository.findByUuid(device.getUuid())
       .orElseGet(() -> this.deviceRepository.save(device));

@@ -19,6 +19,7 @@ public class TokenController {
 
   @PostMapping("register")
   public String registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
-    return "Hello register token. Request: " + this.tokenService.registerToken(tokenRequest);
+    return this.tokenService.registerToken(tokenRequest) ?
+      "Saved token 201" : "Updated token 200";
   }
 }

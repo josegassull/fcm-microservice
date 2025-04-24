@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import com.fcm_ms.token_api.dto.TokenRequest;
@@ -27,17 +29,33 @@ public class TokenService {
   private final DeviceService deviceService;
   private final UserService userService;
 
+  @PersistenceContext
+  private EntityManager entityManager;
+
   @Transactional
-  public String registerToken(TokenRequest tokenRequest) {
+  public Boolean registerToken(TokenRequest tokenRequest) {
     User   user   = this.userService.getFromTokenRequest(tokenRequest);
     Device device = this.deviceService.getFromTokenRequest(tokenRequest);
 
-    Token token = this.tokenMapper.toEntity(tokenRequest);
-    token.setDevice(device);
+    Optional<Token> existingToken = this.tokenRepository.findByDeviceId(device.getId());
 
-    Token savedToken = this.tokenRepository.save(token);
+    Boolean isNew = !existingToken.isPresent();
+    Token toSaveToken;
+    if (!isNew) {
+      toSaveToken = existingToken.get();
+      toSaveToken.setToken(tokenRequest.getToken()); /* will trigger Token's @PreUpdate */
+    } else {
+      toSaveToken = this.tokenMapper.toEntity(tokenRequest);
+      toSaveToken.setDevice(device);
+    }
 
-    return "User: " + user.toString() + " | Device: " + device.toString()
-      + " | Token: " + token.toString() + " | SavedToken: " + savedToken.toString();
+    Token savedToken = this.tokenRepository.save(toSaveToken);
+
+    if (isNew) {
+      this.entityManager.flush();
+      this.entityManager.refresh(savedToken); /* useful if @PreUpdate has triggered */
+    }
+
+    return isNew;
   }
 }

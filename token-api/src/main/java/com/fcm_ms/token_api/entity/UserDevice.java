@@ -53,4 +53,14 @@ public class UserDevice {
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();
   }
+
+  public static UserDevice of(
+      User user,
+      Device device) {
+
+    return UserDevice.builder()
+      .user(user)
+      .device(device)
+      .build();
+  }
 }

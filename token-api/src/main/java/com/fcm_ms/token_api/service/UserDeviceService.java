@@ -15,10 +15,9 @@ public class UserDeviceService {
   private final UserDeviceRepository userDeviceRepository;
 
   public UserDevice saveIfNotExists(User user, Device device) {
-    UserDevice ud = UserDevice.builder()
-      .user(user)
-      .device(device)
-      .build();
-    return this.userDeviceRepository.save(ud);
+    return this.userDeviceRepository.findByUserAndDevice(user, device)
+      .orElseGet(() -> this.userDeviceRepository.save(
+        UserDevice.of(user, device)
+      ));
   }
 }

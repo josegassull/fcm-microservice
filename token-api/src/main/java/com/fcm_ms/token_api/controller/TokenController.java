@@ -1,5 +1,7 @@
 package com.fcm_ms.token_api.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,12 @@ public class TokenController {
   private final TokenService tokenService;
 
   @PostMapping("register")
-  public String registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
-    return this.tokenService.registerToken(tokenRequest);
+  public ResponseEntity<String> registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
+    Boolean isCreated = this.tokenService.registerToken(tokenRequest);
+
+    return new ResponseEntity<>(
+      isCreated ? "Created" : "Updated",
+      isCreated ? HttpStatus.CREATED : HttpStatus.OK
+    );
   }
 }

@@ -32,7 +32,7 @@ public class TokenService {
   private EntityManager entityManager;
 
   @Transactional
-  public String registerToken(TokenRequest tokenRequest) {
+  public Boolean registerToken(TokenRequest tokenRequest) {
     User   user   = this.userService.getFromTokenRequest(tokenRequest);
     Device device = this.deviceService.getFromTokenRequest(tokenRequest);
 
@@ -57,6 +57,6 @@ public class TokenService {
       this.entityManager.refresh(savedToken); /* useful if @PreUpdate has triggered */
     }
 
-    return "Saved";
+    return isNew;
   }
 }

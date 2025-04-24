@@ -23,22 +23,11 @@ public class TokenController {
   @PostMapping("register")
   public ResponseEntity<TokenResponse> registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
     Boolean isCreated = this.tokenService.registerToken(tokenRequest);
-
-    TokenResponse tr = new TokenResponse(
-      "message", "description",
-      "token-1230912i3912", 1000,
-      new TokenResponse.Device(
-        "UUID-123-456",
-        "Android"
-      ),
-      new TokenResponse.HttpStatusDetail(
-        HttpStatus.OK.name(), HttpStatus.OK.value()
-      )
-    );
+    TokenResponse tokenResponse = this.tokenService.getTokenResponse(tokenRequest, isCreated);
 
     return new ResponseEntity<TokenResponse>(
-      tr,
-      HttpStatus.valueOf(tr.getHttpStatus().getCode())
+      tokenResponse,
+      HttpStatus.valueOf(tokenResponse.getHttpStatus().getCode())
     );
   }
 }

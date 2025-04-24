@@ -3,6 +3,7 @@ package com.fcm_ms.token_api.service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import jakarta.persistence.EntityManager;
@@ -10,6 +11,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import com.fcm_ms.token_api.dto.TokenRequest;
+import com.fcm_ms.token_api.dto.TokenResponse;
 import com.fcm_ms.token_api.mapper.TokenMapper;
 import com.fcm_ms.token_api.entity.Device;
 import com.fcm_ms.token_api.entity.Token;
@@ -58,5 +60,20 @@ public class TokenService {
     }
 
     return isNew;
+  }
+
+  @Transactional// todo readonly
+  public TokenResponse getTokenResponse(TokenRequest tokenRequest, Boolean isNew) {
+    return new TokenResponse(
+      "message", "description",
+      "token-1230912i3912", 1000,
+      new TokenResponse.Device(
+        "UUID-123-456",
+        "Android"
+      ),
+      new TokenResponse.HttpStatusDetail(
+        HttpStatus.OK.name(), HttpStatus.OK.value()
+      )
+    );
   }
 }

@@ -67,6 +67,7 @@ public class TokenService {
     Device device = this.deviceService.findByUuid(tokenRequest.getDeviceUuid()).get();
 
     return TokenResponse.of(
+        isNew,
         device
         ).toString();
   }

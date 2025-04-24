@@ -38,12 +38,18 @@ public class TokenResponse {
   }
 
   public static TokenResponse of(
+      Boolean isNewToken,
       com.fcm_ms.token_api.entity.Device device
       ) {
+
+    HttpStatus httpStatus = isNewToken ? HttpStatus.CREATED : HttpStatus.OK;
 
     return TokenResponse.builder()
       .device(new TokenResponse.Device(
         device.getUuid(), device.getType().name()
+      ))
+      .httpStatus(new TokenResponse.HttpStatusDetail(
+        httpStatus.name(), httpStatus.value()
       ))
       .build();
   }

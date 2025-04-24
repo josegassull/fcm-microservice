@@ -27,7 +27,7 @@ public class TokenController {
 
     return new ResponseEntity<>(
       tokenResponse,
-      HttpStatus.OK
+      tokenResponse._getHttpStatus()
     );
   }
 }

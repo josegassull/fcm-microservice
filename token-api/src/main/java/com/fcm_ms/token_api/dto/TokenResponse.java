@@ -21,6 +21,10 @@ public class TokenResponse {
   private Device device;
   private HttpStatusDetail httpStatus;
 
+  public HttpStatus _getHttpStatus() {
+    return HttpStatus.valueOf(this.httpStatus.getName());
+  }
+
   @Data
   @AllArgsConstructor
   @NoArgsConstructor

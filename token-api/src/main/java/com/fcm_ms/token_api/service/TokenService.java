@@ -33,6 +33,7 @@ public class TokenService {
     Device device = this.deviceService.getFromTokenRequest(tokenRequest);
 
     Token token = this.tokenMapper.toEntity(tokenRequest);
+    token.setDevice(device);
 
     Token savedToken = this.tokenRepository.save(token);
 

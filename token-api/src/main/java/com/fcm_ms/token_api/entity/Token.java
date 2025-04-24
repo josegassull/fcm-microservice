@@ -36,9 +36,9 @@ public class Token {
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
 
-  // @OneToOne
-  // @JoinColumn(name = "device_id")
-  private Integer device;
+  @OneToOne
+  @JoinColumn(name = "device_id")
+  private Device device;
 
   @PrePersist
   protected void onCreate() {

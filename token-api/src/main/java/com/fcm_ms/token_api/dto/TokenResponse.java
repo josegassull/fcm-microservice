@@ -42,15 +42,14 @@ public class TokenResponse {
   public static TokenResponse of(
       Boolean isNewToken,
       Token token,
-      com.fcm_ms.token_api.entity.Device device,
-      Integer userExternalId
-      ) {
+      Integer userExternalId,
+      com.fcm_ms.token_api.entity.Device device) {
 
-    HttpStatus httpStatus = isNewToken ? HttpStatus.CREATED : HttpStatus.OK;
     String message = (isNewToken ? "Created" : "Updated") + " token";
     String description = "Successfully " + message.toLowerCase()
       + (isNewToken ? " token" : " existing token") + " for user with external_id '"
       + userExternalId + "' and device with uuid '" + device.getUuid() + "'";
+    HttpStatus httpStatus = isNewToken ? HttpStatus.CREATED : HttpStatus.OK;
 
     return TokenResponse.builder()
       .token(token.getToken())
@@ -65,23 +64,4 @@ public class TokenResponse {
       ))
       .build();
   }
-
-  // public static TokenResponse of(
-  //     Boolean isNew,
-  //     String token,
-  //     Integer userExternalId,
-  //     com.fcm_ms.token_api.entity.Device device) {
-  //
-  //   String message = isNew ? "created" : "updated";
-  //   String description = isNew ? "desC new" : "desC upd";
-  //   HttpStatus httpStatus = isNew ? HttpStatus.CREATED : HttpStatus.OK;
-  //
-  //   return TokenResponse.builder()
-  //     .message(message)
-  //     .description(description)
-  //     .userExternalId(userExternalId)
-  //     .device(new TokenResponse.Device(device.getUuid, device.getType()))
-  //     .httpStatus(new TokenResponse.HttpStatusDetail(httpStatus.name(), httpStatus.value()))
-  //     .build();
-  // }
 }

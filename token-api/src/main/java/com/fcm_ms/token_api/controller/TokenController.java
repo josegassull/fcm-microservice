@@ -23,10 +23,10 @@ public class TokenController {
   @PostMapping("register")
   public ResponseEntity<String> registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
     Boolean isCreated = this.tokenService.registerToken(tokenRequest);
-    String tokenResponse = this.tokenService.getTokenResponse(tokenRequest, isCreated);
+    TokenResponse tokenResponse = this.tokenService.getTokenResponse(tokenRequest, isCreated);
 
     return new ResponseEntity<String>(
-      tokenResponse,
+      tokenResponse.toString(),
       HttpStatus.OK
     );
   }

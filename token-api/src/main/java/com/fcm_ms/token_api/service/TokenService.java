@@ -63,15 +63,15 @@ public class TokenService {
   }
 
   @Transactional
-  public String getTokenResponse(TokenRequest tokenRequest, Boolean isNew) {
+  public TokenResponse getTokenResponse(TokenRequest tokenRequest, Boolean isNew) {
     Device device = this.deviceService.findByUuid(tokenRequest.getDeviceUuid()).get();
     Token token = this.tokenRepository.findByDeviceId(device.getId()).get();
 
     return TokenResponse.of(
-        isNew,
-        token,
-        device,
-        tokenRequest.getUserExternalId()
-        ).toString();
+      isNew,
+      token,
+      tokenRequest.getUserExternalId(),
+      device
+    );
   }
 }

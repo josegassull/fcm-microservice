@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+import com.fcm_ms.token_api.entity.Token;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -39,6 +41,7 @@ public class TokenResponse {
 
   public static TokenResponse of(
       Boolean isNewToken,
+      Token token,
       com.fcm_ms.token_api.entity.Device device,
       Integer userExternalId
       ) {
@@ -50,8 +53,10 @@ public class TokenResponse {
       + userExternalId + "' and device with uuid '" + device.getUuid() + "'";
 
     return TokenResponse.builder()
+      .token(token.getToken())
       .message(message)
       .description(description)
+      .userExternalId(userExternalId)
       .device(new TokenResponse.Device(
         device.getUuid(), device.getType().name()
       ))

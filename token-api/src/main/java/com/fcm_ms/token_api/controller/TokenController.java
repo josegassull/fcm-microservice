@@ -19,7 +19,6 @@ public class TokenController {
 
   @PostMapping("register")
   public String registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
-    return this.tokenService.registerToken(tokenRequest) ?
-      "Saved token 201" : "Updated token 200";
+    return this.tokenService.registerToken(tokenRequest);
   }
 }

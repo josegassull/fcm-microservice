@@ -2,15 +2,17 @@ package com.fcm_ms.token_api.service;
 
 import org.springframework.stereotype.Service;
 
-import com.fcm_ms.token_api.entity.User;
 import com.fcm_ms.token_api.entity.Device;
+import com.fcm_ms.token_api.entity.User;
+import com.fcm_ms.token_api.entity.UserDevice;
 
 @Service
 public class UserDeviceService {
 
-  public void saveIfNotExists(User user, Device device) {
-    System.out.println("[DEBUG] [stf] user device relationship");
-    System.out.println(user.toString());
-    System.out.println(device.toString());
+  public UserDevice saveIfNotExists(User user, Device device) {
+    return UserDevice.builder()
+      .user(user)
+      .device(device)
+      .build();
   }
 }

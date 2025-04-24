@@ -21,13 +21,13 @@ public class TokenController {
   private final TokenService tokenService;
 
   @PostMapping("register")
-  public ResponseEntity<TokenResponse> registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
+  public ResponseEntity<String> registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
     Boolean isCreated = this.tokenService.registerToken(tokenRequest);
-    TokenResponse tokenResponse = this.tokenService.getTokenResponse(tokenRequest, isCreated);
+    String tokenResponse = this.tokenService.getTokenResponse(tokenRequest, isCreated);
 
-    return new ResponseEntity<TokenResponse>(
+    return new ResponseEntity<String>(
       tokenResponse,
-      HttpStatus.valueOf(tokenResponse.getHttpStatus().getCode())
+      HttpStatus.OK
     );
   }
 }

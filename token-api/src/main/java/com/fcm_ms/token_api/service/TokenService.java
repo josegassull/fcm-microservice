@@ -62,18 +62,8 @@ public class TokenService {
     return isNew;
   }
 
-  @Transactional// todo readonly
-  public TokenResponse getTokenResponse(TokenRequest tokenRequest, Boolean isNew) {
-    return new TokenResponse(
-      "message", "description",
-      "token-1230912i3912", 1000,
-      new TokenResponse.Device(
-        "UUID-123-456",
-        "Android"
-      ),
-      new TokenResponse.HttpStatusDetail(
-        HttpStatus.OK.name(), HttpStatus.OK.value()
-      )
-    );
+  @Transactional
+  public String getTokenResponse(TokenRequest tokenRequest, Boolean isNew) {
+    return this.deviceService.findByUuid(tokenRequest.getDeviceUuid()).get().toString();
   }
 }

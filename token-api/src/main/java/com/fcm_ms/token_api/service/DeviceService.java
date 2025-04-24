@@ -1,5 +1,7 @@
 package com.fcm_ms.token_api.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,10 @@ public class DeviceService {
 
   private final DeviceRepository deviceRepository;
 
+  public Optional<Device> findByUuid(String uuid) {
+    return this.deviceRepository.findByUuid(uuid);
+  }
+
   @Transactional
   public Device getFromTokenRequest(TokenRequest tokenRequest) {
     Device device = Device.of(
@@ -21,7 +27,7 @@ public class DeviceService {
       tokenRequest.getDeviceType()
     );
 
-    return this.deviceRepository.findByUuid(device.getUuid())
+    return this.findByUuid(device.getUuid())
       .orElseGet(() -> this.deviceRepository.save(device));
   }
 }

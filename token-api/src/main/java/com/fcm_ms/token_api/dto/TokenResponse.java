@@ -39,12 +39,19 @@ public class TokenResponse {
 
   public static TokenResponse of(
       Boolean isNewToken,
-      com.fcm_ms.token_api.entity.Device device
+      com.fcm_ms.token_api.entity.Device device,
+      Integer userExternalId
       ) {
 
     HttpStatus httpStatus = isNewToken ? HttpStatus.CREATED : HttpStatus.OK;
+    String message = (isNewToken ? "Created" : "Updated") + " token";
+    String description = "Successfully " + message.toLowerCase()
+      + (isNewToken ? " token" : " existing token") + " for user with external_id '"
+      + userExternalId + "' and device with uuid '" + device.getUuid() + "'";
 
     return TokenResponse.builder()
+      .message(message)
+      .description(description)
       .device(new TokenResponse.Device(
         device.getUuid(), device.getType().name()
       ))

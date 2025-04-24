@@ -68,7 +68,8 @@ public class TokenService {
 
     return TokenResponse.of(
         isNew,
-        device
+        device,
+        tokenRequest.getUserExternalId()
         ).toString();
   }
 }

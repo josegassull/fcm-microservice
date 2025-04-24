@@ -57,6 +57,6 @@ public class TokenService {
       this.entityManager.refresh(savedToken); /* useful if @PreUpdate has triggered */
     }
 
-    return this.userDeviceService.saveIfNotExists(user, device).toString();
+    return "Saved user-device: " +this.userDeviceService.saveIfNotExists(user, device).toString();
   }
 }

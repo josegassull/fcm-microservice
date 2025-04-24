@@ -37,6 +37,17 @@ public class TokenResponse {
     private Integer code;
   }
 
+  public static TokenResponse of(
+      com.fcm_ms.token_api.entity.Device device
+      ) {
+
+    return TokenResponse.builder()
+      .device(new TokenResponse.Device(
+        device.getUuid(), device.getType().name()
+      ))
+      .build();
+  }
+
   // public static TokenResponse of(
   //     Boolean isNew,
   //     String token,

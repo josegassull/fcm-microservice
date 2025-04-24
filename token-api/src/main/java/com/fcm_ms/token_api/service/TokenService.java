@@ -64,6 +64,10 @@ public class TokenService {
 
   @Transactional
   public String getTokenResponse(TokenRequest tokenRequest, Boolean isNew) {
-    return this.deviceService.findByUuid(tokenRequest.getDeviceUuid()).get().toString();
+    Device device = this.deviceService.findByUuid(tokenRequest.getDeviceUuid()).get();
+
+    return TokenResponse.of(
+        device
+        ).toString();
   }
 }

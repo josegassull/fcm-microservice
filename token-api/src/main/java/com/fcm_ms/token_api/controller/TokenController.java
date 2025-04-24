@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 
 import com.fcm_ms.token_api.dto.TokenRequest;
+import com.fcm_ms.token_api.dto.TokenResponse;
 import com.fcm_ms.token_api.service.TokenService;
 
 @RestController
@@ -20,12 +21,24 @@ public class TokenController {
   private final TokenService tokenService;
 
   @PostMapping("register")
-  public ResponseEntity<String> registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
+  public ResponseEntity<TokenResponse> registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
     Boolean isCreated = this.tokenService.registerToken(tokenRequest);
 
-    return new ResponseEntity<>(
-      isCreated ? "Created" : "Updated",
-      isCreated ? HttpStatus.CREATED : HttpStatus.OK
+    TokenResponse tr = new TokenResponse(
+      "message", "description",
+      "token-1230912i3912", 1000,
+      new TokenResponse.Device(
+        "UUID-123-456",
+        "Android"
+      ),
+      new TokenResponse.HttpStatusDetail(
+        HttpStatus.OK.name(), HttpStatus.OK.value()
+      )
+    );
+
+    return new ResponseEntity<TokenResponse>(
+      tr,
+      HttpStatus.valueOf(tr.getHttpStatus().getCode())
     );
   }
 }

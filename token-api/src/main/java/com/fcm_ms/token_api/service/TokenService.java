@@ -15,8 +15,6 @@ import com.fcm_ms.token_api.entity.Device;
 import com.fcm_ms.token_api.entity.Token;
 import com.fcm_ms.token_api.entity.User;
 import com.fcm_ms.token_api.repository.TokenRepository;
-import com.fcm_ms.token_api.service.DeviceService;
-import com.fcm_ms.token_api.service.UserService;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +26,7 @@ public class TokenService {
 
   private final DeviceService deviceService;
   private final UserService userService;
+  private final UserDeviceService userDeviceService;
 
   @PersistenceContext
   private EntityManager entityManager;
@@ -36,6 +35,8 @@ public class TokenService {
   public Boolean registerToken(TokenRequest tokenRequest) {
     User   user   = this.userService.getFromTokenRequest(tokenRequest);
     Device device = this.deviceService.getFromTokenRequest(tokenRequest);
+
+    this.userDeviceService.saveIfNotExists(user, device);
 
     Optional<Token> existingToken = this.tokenRepository.findByDeviceId(device.getId());
 

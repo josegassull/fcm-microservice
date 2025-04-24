@@ -36,7 +36,7 @@ public class TokenService {
     User   user   = this.userService.getFromTokenRequest(tokenRequest);
     Device device = this.deviceService.getFromTokenRequest(tokenRequest);
 
-    // this.userDeviceService.saveIfNotExists(user, device);
+    this.userDeviceService.saveIfNotExists(user, device);
 
     Optional<Token> existingToken = this.tokenRepository.findByDeviceId(device.getId());
 
@@ -57,6 +57,6 @@ public class TokenService {
       this.entityManager.refresh(savedToken); /* useful if @PreUpdate has triggered */
     }
 
-    return "Saved user-device: " +this.userDeviceService.saveIfNotExists(user, device).toString();
+    return "Saved";
   }
 }

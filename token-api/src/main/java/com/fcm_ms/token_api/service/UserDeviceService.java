@@ -1,5 +1,7 @@
 package com.fcm_ms.token_api.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -14,10 +16,10 @@ public class UserDeviceService {
 
   private final UserDeviceRepository userDeviceRepository;
 
-  public UserDevice saveIfNotExists(User user, Device device) {
-    return this.userDeviceRepository.findByUserAndDevice(user, device)
-      .orElseGet(() -> this.userDeviceRepository.save(
-        UserDevice.of(user, device)
-      ));
+  public void saveIfNotExists(User user, Device device) {
+    Optional<UserDevice> existingUD = this.userDeviceRepository.findByUserAndDevice(user, device);
+
+    if (!existingUD.isPresent())
+      this.userDeviceRepository.save(UserDevice.of(user, device));
   }
 }

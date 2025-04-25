@@ -5,10 +5,12 @@ import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.FirebaseMessaging;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
+import com.fcm_ms.token_api.dto.BasicNotificationRequest;
 import com.fcm_ms.token_api.service.UserNotificationService;
 
 @RestController
@@ -19,7 +21,9 @@ public class UserNotificationController {
   private final UserNotificationService userNotificationService;
 
   @PostMapping("{user_external_id}")
-  public String notifyUser(@PathVariable("user_external_id") String userExternalId) {
+  public String notifyUser(
+      @PathVariable("user_external_id") String userExternalId,
+      @RequestBody BasicNotificationRequest basicNotificationRequest) {
     String response = "Notification not sent";
 
     /* TODO
@@ -29,7 +33,7 @@ public class UserNotificationController {
      * */
 
     try {
-      Message message = this.userNotificationService.getMessage(userExternalId);
+      Message message = this.userNotificationService.getMessage(userExternalId, basicNotificationRequest);
       response = FirebaseMessaging.getInstance().sendAsync(message).get();
 
     } catch (Exception ex) {}

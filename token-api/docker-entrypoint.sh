@@ -21,13 +21,19 @@ start_spring_boot() {
 }
 
 restart_spring_boot() {
+  local exit_on_failure="$1"
+
   if ! start_spring_boot; then
     echo "Initial springboot startup failed."
-    exit 1
+    if [ "$exit_on_failure" = "true" ]; then
+      exit 1
+    else
+      sleep 333
+    fi
   fi
 }
 
-restart_spring_boot
+restart_spring_boot "false"
 
 echo "Start watching for file changes..."
 while true; do
@@ -41,6 +47,6 @@ while true; do
         wait $SPRING_PID 2> /dev/null
       fi
 
-      restart_spring_boot
+      restart_spring_boot "false"
     fi
 done

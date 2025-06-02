@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 
 import com.fcm_ms.token_api.dto.BasicNotificationRequest;
 import com.fcm_ms.token_api.service.UserNotificationService;
@@ -23,7 +24,8 @@ public class UserNotificationController {
   @PostMapping("{user_external_id}")
   public String notifyUser(
       @PathVariable("user_external_id") String userExternalId,
-      @RequestBody BasicNotificationRequest basicNotificationRequest) {
+      @Valid @RequestBody BasicNotificationRequest basicNotificationRequest) {
+
     String response = "Notification not sent";
 
     /* TODO

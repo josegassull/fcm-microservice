@@ -18,14 +18,25 @@ import com.fcm_ms.token_api.dto.ErrorResponse;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(HandlerMethodValidationException.class)
-    public Map<String, String> handleValidationException(HandlerMethodValidationException ex) {
-        Map<String, String> error = new HashMap<>();
-        error.put("error", "Invalid path variable format: only digits allowed.");
-        return error;
-    }
+  public ResponseEntity<ErrorResponse> handlePathValidationException(
+    HandlerMethodValidationException ex,
+    HttpServletRequest request) {
+
+    Map<String, String> error = new HashMap<>();
+    error.put("path_parameter", "Invalid path parameter format: only numbers allowed");
+
+    ErrorResponse errorResponse = ErrorResponse.of(
+      HttpStatus.BAD_REQUEST.value(),
+      "Invalid path parameter",
+      error,
+      request.getRequestURI()
+    );
+
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+  }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorResponse> handleValidationExceptions(
+  public ResponseEntity<ErrorResponse> handleBodyValidationExceptions(
       MethodArgumentNotValidException ex,
       HttpServletRequest request) {
 

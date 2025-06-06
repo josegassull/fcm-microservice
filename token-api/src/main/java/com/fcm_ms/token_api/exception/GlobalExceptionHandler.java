@@ -9,12 +9,20 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.fcm_ms.token_api.dto.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+  @ExceptionHandler(HandlerMethodValidationException.class)
+    public Map<String, String> handleValidationException(HandlerMethodValidationException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Invalid path variable format: only digits allowed.");
+        return error;
+    }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleValidationExceptions(

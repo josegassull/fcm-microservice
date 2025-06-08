@@ -111,6 +111,84 @@ curl -X POST http://localhost:8080/api/token/register \
 
 ---
 
+### Notifications
+
+#### POST `/notify/user/{user_external_id}`
+
+Send push notifications to all devices registered for a specific user.
+
+**Request:**
+```http
+POST http://localhost:8080/api/notify/user/43
+Content-Type: application/json
+
+{
+  "title": "Hello!!",
+  "body": "This is a notification body",
+  "data": {
+    "key1": true,
+    "key2": "Foo",
+    "key3": 123
+  }
+}
+```
+
+**Path Parameters:**
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| `user_external_id` | Number | External user identifier to send notifications to | Yes |
+
+**Request Body Parameters:**
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| `title` | String | Notification title | Yes |
+| `body` | String | Notification message body | Yes |
+| `data` | Object | Additional custom data to include with notification | No |
+
+**Response:**
+```json
+{
+  "timestamp": "2025-06-08T22:12:53.740323358",
+  "message": "Fired notifications for 1 instances of user 43",
+  "notifiedDevicesCounts": {
+    "failure": 0,
+    "success": 1
+  }
+}
+```
+
+**Response Fields:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `timestamp` | String | ISO timestamp of when the notification was sent |
+| `message` | String | Summary message of the operation |
+| `notifiedDevicesCounts` | Object | Notification delivery statistics |
+| `notifiedDevicesCounts.failure` | Number | Number of devices that failed to receive notification |
+| `notifiedDevicesCounts.success` | Number | Number of devices that successfully received notification |
+
+**Example Request:**
+```bash
+curl -X POST http://localhost:8080/api/notify/user/43 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "New Message",
+    "body": "You have a new notification",
+    "data": {
+      "notify": 1122,
+      "category": "message"
+    }
+  }'
+```
+
+**Status Codes:**
+- `200 OK` - Notifications **fired** successfully
+- `400 Bad Request` - Invalid request body or missing required fields
+
+---
+
 ## Error Handling
 
 TODO ErrorResponseDTO

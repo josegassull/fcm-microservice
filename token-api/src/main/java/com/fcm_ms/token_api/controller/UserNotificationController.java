@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.BatchResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +43,7 @@ public class UserNotificationController {
     );
 
     if (existingError.isPresent())
-      response = existingError.get().toString();
+      return existingError.get().toString();
 
     /* TODO
      *  - get list of tokens of user with externalId X
@@ -54,15 +55,21 @@ public class UserNotificationController {
       userExternalId, basicNotificationRequestDTO
     );
 
-    return userMessages.toString();
+    if (userMessages.isEmpty())
+      return "No tokens found for this user";
 
-    // try {
-    //   Message message = this.userNotificationService.getMessage(userExternalId, basicNotificationRequestDTO);
-    //   response = FirebaseMessaging.getInstance().sendAsync(message).get();
-    //
-    // } catch (Exception ex) {}
+    try {
+      BatchResponse batchResponse = FirebaseMessaging.getInstance().sendAll(userMessages);
 
-    // return response;
+      return String.format(
+        "Sent %d messages: %d succeeded, %d failed",
+        userMessages.size(),
+        batchResponse.getSuccessCount(),
+        batchResponse.getFailureCount()
+      );
+    } catch (Exception ex) {
+      return "Failed to send notifications: " + ex.getMessage();
+    }
   }
 
 }

@@ -18,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import com.fcm_ms.token_api.dto.BasicNotificationRequestDTO;
 import com.fcm_ms.token_api.dto.ErrorResponseDTO;
+import com.fcm_ms.token_api.dto.NotificationResponseDTO;
 import com.fcm_ms.token_api.service.UserNotificationService;
 import com.fcm_ms.token_api.util.StringToIntUtil;
 import com.fcm_ms.token_api.entity.Token;
@@ -64,21 +65,25 @@ public class UserNotificationController {
      * }
      */
 
-    /* TODO response
-     *  - count successfully sent messages
-     *  - count failure messages
-     *  - "Notified {messagesCount} instances for user {user_external_id}"
-     */
-
+    int success = 0;
+    int failure = 0;
     for (Message m : userMessages) {
       try {
         response += "\n" + firebaseMessaging.send(m);
+        ++success;
       } catch (Exception ex) {
-        response += "\n" + ex.getMessage();
+        ex.printStackTrace();
+        ++failure;
       }
     }
 
-    return ResponseEntity.ok().body(response);
+    return ResponseEntity
+      .ok()
+      .body(NotificationResponseDTO.of(
+        userMessages.size(),
+        Integer.parseInt(userExternalId),
+        success, failure
+      ));
   }
 
 }

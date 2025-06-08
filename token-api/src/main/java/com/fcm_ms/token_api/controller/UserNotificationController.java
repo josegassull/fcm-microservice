@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 
-import com.fcm_ms.token_api.dto.BasicNotificationRequest;
+import com.fcm_ms.token_api.dto.BasicNotificationRequestDTO;
 import com.fcm_ms.token_api.service.UserNotificationService;
 
 @RestController
@@ -24,7 +24,7 @@ public class UserNotificationController {
   @PostMapping("{user_external_id}")
   public String notifyUser(
       @PathVariable("user_external_id") String userExternalId,
-      @Valid @RequestBody BasicNotificationRequest basicNotificationRequest) {
+      @Valid @RequestBody BasicNotificationRequestDTO basicNotificationRequestDTO) {
 
     String response = "Notification not sent";
 
@@ -35,7 +35,7 @@ public class UserNotificationController {
      * */
 
     try {
-      Message message = this.userNotificationService.getMessage(userExternalId, basicNotificationRequest);
+      Message message = this.userNotificationService.getMessage(userExternalId, basicNotificationRequestDTO);
       response = FirebaseMessaging.getInstance().sendAsync(message).get();
 
     } catch (Exception ex) {}

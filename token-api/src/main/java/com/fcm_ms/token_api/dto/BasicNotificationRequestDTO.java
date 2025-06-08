@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class BasicNotificationRequest {
+public class BasicNotificationRequestDTO {
 
   @NotBlank(message = "Notification title is required")
   String title;

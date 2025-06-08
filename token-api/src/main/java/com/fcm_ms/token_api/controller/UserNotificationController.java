@@ -64,13 +64,16 @@ public class UserNotificationController {
       }
     }
 
-    return ResponseEntity
-      .ok()
-      .body(NotificationResponseDTO.of(
-        userMessages.size(),
-        Integer.parseInt(userExternalId),
-        success, failure
-      ));
+    NotificationResponseDTO notifResponse = NotificationResponseDTO.of(
+      userMessages.size(),
+      Integer.parseInt(userExternalId),
+      success, failure
+    );
+
+    return new ResponseEntity<>(
+      notifResponse,
+      notifResponse._getHttpStatus()
+    );
   }
 
 }

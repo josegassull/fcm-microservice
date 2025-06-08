@@ -6,6 +6,7 @@ import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.BatchResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +31,7 @@ public class UserNotificationController {
   private final UserNotificationService userNotificationService;
 
   @PostMapping("{user_external_id}")
-  public String notifyUser(
+  public ResponseEntity<?> notifyUser(
       @PathVariable("user_external_id") String userExternalId,
       @Valid @RequestBody BasicNotificationRequestDTO basicNotificationRequestDTO,
       HttpServletRequest request) {
@@ -44,7 +45,9 @@ public class UserNotificationController {
     );
 
     if (existingError.isPresent())
-      return existingError.get().toString();
+      return ResponseEntity
+        .badRequest()
+        .body(existingError.get());
 
     List<Message> userMessages = this.userNotificationService.getMessages(
       Integer.parseInt(userExternalId), basicNotificationRequestDTO
@@ -52,13 +55,13 @@ public class UserNotificationController {
 
     for (Message m : userMessages) {
       try {
-        response += firebaseMessaging.send(m);
+        response += "\n" + firebaseMessaging.send(m);
       } catch (Exception ex) {
-        response += ex.getMessage();
+        response += "\n" + ex.getMessage();
       }
     }
 
-    return response;
+    return ResponseEntity.ok().body(response);
   }
 
 }

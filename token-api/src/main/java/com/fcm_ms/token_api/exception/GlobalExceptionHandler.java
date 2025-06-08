@@ -11,11 +11,30 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.fcm_ms.token_api.dto.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+  @ExceptionHandler(NoResourceFoundException.class)
+  public ResponseEntity<ErrorResponse> handle404(
+    NoResourceFoundException ex,
+    HttpServletRequest request) {
+
+    Map<String, String> errors = new HashMap<>();
+    errors.put(ex.getResourcePath(), "The requested resource was not found");
+
+    ErrorResponse errorResponse = ErrorResponse.of(
+      HttpStatus.NOT_FOUND.value(),
+      "Endpoint not found",
+      errors,
+      request.getRequestURI()
+    );
+
+    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+  }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleBodyValidationExceptions(

@@ -7,7 +7,7 @@ import lombok.Data;
 import com.fcm_ms.token_api.enums.ValidDeviceType;
 
 @Data
-public class TokenRequest {
+public class TokenRequestDTO {
 
   @NotBlank(message = "FCM Token is required")
   private String token;

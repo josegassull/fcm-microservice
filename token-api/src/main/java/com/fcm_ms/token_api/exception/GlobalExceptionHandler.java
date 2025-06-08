@@ -14,20 +14,20 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import com.fcm_ms.token_api.dto.ErrorResponse;
+import com.fcm_ms.token_api.dto.ErrorResponseDTO;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(NoResourceFoundException.class)
-  public ResponseEntity<ErrorResponse> handle404(
+  public ResponseEntity<ErrorResponseDTO> handle404(
     NoResourceFoundException ex,
     HttpServletRequest request) {
 
     Map<String, String> errors = new HashMap<>();
     errors.put(ex.getResourcePath(), "The requested resource was not found");
 
-    ErrorResponse errorResponse = ErrorResponse.of(
+    ErrorResponseDTO errorResponse = ErrorResponseDTO.of(
       HttpStatus.NOT_FOUND.value(),
       "Endpoint not found",
       errors,
@@ -38,14 +38,14 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-  public ResponseEntity<ErrorResponse> handleMethodNotSupported(
+  public ResponseEntity<ErrorResponseDTO> handleMethodNotSupported(
     HttpRequestMethodNotSupportedException ex,
     HttpServletRequest request) {
 
     Map<String, String> errors = new HashMap<>();
     errors.put(ex.getMethod(), "This method is not supported for this endpoint");
 
-    ErrorResponse errorResponse = ErrorResponse.of(
+    ErrorResponseDTO errorResponse = ErrorResponseDTO.of(
       HttpStatus.METHOD_NOT_ALLOWED.value(),
       "Method not allowed",
       errors,
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorResponse> handleBodyValidationExceptions(
+  public ResponseEntity<ErrorResponseDTO> handleBodyValidationExceptions(
       MethodArgumentNotValidException ex,
       HttpServletRequest request) {
 
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
       errors.put(fieldName, errorMessage);
     });
 
-    ErrorResponse errorResponse = ErrorResponse.of(
+    ErrorResponseDTO errorResponse = ErrorResponseDTO.of(
       HttpStatus.BAD_REQUEST.value(),
       "Invalid fields",
       errors,
@@ -78,14 +78,14 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<ErrorResponse> handleEmptyRequestBody(
+  public ResponseEntity<ErrorResponseDTO> handleEmptyRequestBody(
       HttpMessageNotReadableException ex,
       HttpServletRequest request) {
 
     Map<String, String> errors = new HashMap<>();
     errors.put("requestBody", "Request body is missing or malformed");
 
-    ErrorResponse errorResponse = ErrorResponse.of(
+    ErrorResponseDTO errorResponse = ErrorResponseDTO.of(
       HttpStatus.BAD_REQUEST.value(),
       "Empty or invalid request body",
       errors,

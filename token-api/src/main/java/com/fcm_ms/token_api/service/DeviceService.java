@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-import com.fcm_ms.token_api.dto.TokenRequest;
+import com.fcm_ms.token_api.dto.TokenRequestDTO;
 import com.fcm_ms.token_api.entity.Device;
 import com.fcm_ms.token_api.repository.DeviceRepository;
 
@@ -21,7 +21,7 @@ public class DeviceService {
   }
 
   @Transactional
-  public Device getFromTokenRequest(TokenRequest tokenRequest) {
+  public Device getFromTokenRequest(TokenRequestDTO tokenRequest) {
     Device device = Device.of(
       tokenRequest.getDeviceUuid(),
       tokenRequest.getDeviceType()

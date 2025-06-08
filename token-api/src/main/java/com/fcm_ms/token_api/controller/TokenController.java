@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 
-import com.fcm_ms.token_api.dto.TokenRequest;
-import com.fcm_ms.token_api.dto.TokenResponse;
+import com.fcm_ms.token_api.dto.TokenRequestDTO;
+import com.fcm_ms.token_api.dto.TokenResponseDTO;
 import com.fcm_ms.token_api.service.TokenService;
 
 @RestController
@@ -23,9 +23,9 @@ public class TokenController {
   private final TokenService tokenService;
 
   @PostMapping("register")
-  public ResponseEntity<TokenResponse> registerNewToken(@Valid @RequestBody TokenRequest tokenRequest) {
+  public ResponseEntity<TokenResponseDTO> registerNewToken(@Valid @RequestBody TokenRequestDTO tokenRequest) {
     Boolean isCreated = this.tokenService.registerToken(tokenRequest);
-    TokenResponse tokenResponse = this.tokenService.getTokenResponse(tokenRequest, isCreated);
+    TokenResponseDTO tokenResponse = this.tokenService.getTokenResponse(tokenRequest, isCreated);
 
     return new ResponseEntity<>(
       tokenResponse,

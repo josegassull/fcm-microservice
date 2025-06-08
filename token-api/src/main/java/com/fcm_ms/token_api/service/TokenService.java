@@ -10,8 +10,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
-import com.fcm_ms.token_api.dto.TokenRequest;
-import com.fcm_ms.token_api.dto.TokenResponse;
+import com.fcm_ms.token_api.dto.TokenRequestDTO;
+import com.fcm_ms.token_api.dto.TokenResponseDTO;
 import com.fcm_ms.token_api.mapper.TokenMapper;
 import com.fcm_ms.token_api.entity.Device;
 import com.fcm_ms.token_api.entity.Token;
@@ -34,7 +34,7 @@ public class TokenService {
   private EntityManager entityManager;
 
   @Transactional
-  public Boolean registerToken(TokenRequest tokenRequest) {
+  public Boolean registerToken(TokenRequestDTO tokenRequest) {
     User   user   = this.userService.getFromTokenRequest(tokenRequest);
     Device device = this.deviceService.getFromTokenRequest(tokenRequest);
 
@@ -63,11 +63,11 @@ public class TokenService {
   }
 
   @Transactional
-  public TokenResponse getTokenResponse(TokenRequest tokenRequest, Boolean isNew) {
+  public TokenResponseDTO getTokenResponse(TokenRequestDTO tokenRequest, Boolean isNew) {
     Device device = this.deviceService.findByUuid(tokenRequest.getDeviceUuid()).get();
     Token token = this.tokenRepository.findByDeviceId(device.getId()).get();
 
-    return TokenResponse.of(
+    return TokenResponseDTO.of(
       isNew,
       token,
       tokenRequest.getUserExternalId(),

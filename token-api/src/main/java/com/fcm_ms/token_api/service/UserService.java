@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import jakarta.transaction.Transactional;
 
-import com.fcm_ms.token_api.dto.TokenRequest;
+import com.fcm_ms.token_api.dto.TokenRequestDTO;
 import com.fcm_ms.token_api.entity.User;
 import com.fcm_ms.token_api.repository.UserRepository;
 
@@ -15,7 +15,7 @@ public class UserService {
   private final UserRepository userRepository;
 
   @Transactional
-  public User getFromTokenRequest(TokenRequest tokenRequest) {
+  public User getFromTokenRequest(TokenRequestDTO tokenRequest) {
     Integer externalId = tokenRequest.getUserExternalId();
 
     return this.userRepository.findByExternalId(externalId)

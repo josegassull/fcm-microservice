@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ErrorResponse {
+public class ErrorResponseDTO {
 
   private LocalDateTime timestamp;
   private int status;
@@ -19,13 +19,13 @@ public class ErrorResponse {
   private Map<String, String> errors;
   private String path;
 
-  public static ErrorResponse of(
+  public static ErrorResponseDTO of(
       int status,
       String error,
       Map<String, String> errors,
       String path) {
 
-    return ErrorResponse.builder()
+    return ErrorResponseDTO.builder()
       .timestamp(LocalDateTime.now())
       .status(status)
       .error(error)

@@ -12,7 +12,7 @@ import com.fcm_ms.token_api.entity.Token;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenResponse {
+public class TokenResponseDTO {
 
   private String message;
   private String description;
@@ -43,7 +43,7 @@ public class TokenResponse {
     private Integer code;
   }
 
-  public static TokenResponse of(
+  public static TokenResponseDTO of(
       Boolean isNewToken,
       Token token,
       Integer userExternalId,
@@ -55,15 +55,15 @@ public class TokenResponse {
       + userExternalId + "' and device with uuid '" + device.getUuid() + "'";
     HttpStatus httpStatus = isNewToken ? HttpStatus.CREATED : HttpStatus.OK;
 
-    return TokenResponse.builder()
+    return TokenResponseDTO.builder()
       .token(token.getToken())
       .message(message)
       .description(description)
       .userExternalId(userExternalId)
-      .device(new TokenResponse.Device(
+      .device(new TokenResponseDTO.Device(
         device.getUuid(), device.getType().name()
       ))
-      .httpStatus(new TokenResponse.HttpStatusDetail(
+      .httpStatus(new TokenResponseDTO.HttpStatusDetail(
         httpStatus.name(), httpStatus.value()
       ))
       .build();

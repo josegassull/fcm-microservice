@@ -1,6 +1,7 @@
 package com.fcm_ms.token_api.controller;
 
 import java.util.Optional;
+import java.util.List;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -17,6 +18,7 @@ import com.fcm_ms.token_api.dto.BasicNotificationRequestDTO;
 import com.fcm_ms.token_api.dto.ErrorResponseDTO;
 import com.fcm_ms.token_api.service.UserNotificationService;
 import com.fcm_ms.token_api.util.StringToIntUtil;
+import com.fcm_ms.token_api.entity.Token;
 
 @RestController
 @RequestMapping("api/notify/user")
@@ -48,13 +50,18 @@ public class UserNotificationController {
      *  - send to all tokens
      * */
 
-    try {
-      Message message = this.userNotificationService.getMessage(userExternalId, basicNotificationRequestDTO);
-      response = FirebaseMessaging.getInstance().sendAsync(message).get();
+    List<Token> userTokens = this.userNotificationService.getMessage(
+      userExternalId, basicNotificationRequestDTO
+    );
+    return userTokens.toString();
 
-    } catch (Exception ex) {}
+    // try {
+    //   Message message = this.userNotificationService.getMessage(userExternalId, basicNotificationRequestDTO);
+    //   response = FirebaseMessaging.getInstance().sendAsync(message).get();
+    //
+    // } catch (Exception ex) {}
 
-    return response;
+    // return response;
   }
 
 }

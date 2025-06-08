@@ -18,13 +18,11 @@ public class UserNotificationService {
 
   private final TokenRepository tokenRepository;
 
-  public List<Message> getMessages(String userExternalId, BasicNotificationRequestDTO basicNotificationRequestDTO) {
+  public List<Message> getMessages(Integer userExternalId, BasicNotificationRequestDTO basicNotificationRequestDTO) {
     String notifTitle = basicNotificationRequestDTO.getTitle();
     String notifBody = basicNotificationRequestDTO.getBody();
 
-    List<Token> userTokens = this.tokenRepository.findTokensByUserExternalId(
-      Integer.parseInt(userExternalId)
-    );
+    List<Token> userTokens = this.tokenRepository.findTokensByUserExternalId(userExternalId);
 
     return userTokens.stream()
       .map(token -> Message.builder()
@@ -34,7 +32,6 @@ public class UserNotificationService {
           .setBody(notifBody)
           .build()
         )
-        .putAllData(new HashMap<>())
         .build()
       )
       .collect(Collectors.toList());

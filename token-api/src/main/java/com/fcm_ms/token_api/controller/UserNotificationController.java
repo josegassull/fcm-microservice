@@ -26,6 +26,7 @@ import com.fcm_ms.token_api.entity.Token;
 @RequiredArgsConstructor
 public class UserNotificationController {
 
+  private final FirebaseMessaging firebaseMessaging;
   private final UserNotificationService userNotificationService;
 
   @PostMapping("{user_external_id}")
@@ -52,14 +53,27 @@ public class UserNotificationController {
      * */
 
     List<Message> userMessages = this.userNotificationService.getMessages(
-      userExternalId, basicNotificationRequestDTO
+      Integer.parseInt(userExternalId), basicNotificationRequestDTO
     );
 
+    /*
     if (userMessages.isEmpty())
       return "No tokens found for this user";
 
+      for (int i = 0; i < userMessages.size(); i++) {
+        try {
+            response = firebaseMessaging.send(userMessages.get(i));
+            System.out.println("Message " + i + " sent successfully: " + response);
+        } catch (Exception e) {
+        e.printStackTrace();
+            System.err.println("Message " + i + " failed: " + e.getMessage());
+        }
+      }
+    return response;
+    */
+
     try {
-      BatchResponse batchResponse = FirebaseMessaging.getInstance().sendAll(userMessages);
+      BatchResponse batchResponse = firebaseMessaging.sendAll(userMessages);
 
       return String.format(
         "Sent %d messages: %d succeeded, %d failed",

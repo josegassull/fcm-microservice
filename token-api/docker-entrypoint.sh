@@ -2,51 +2,32 @@
 
 # live reload script for maven running on a docker container with error handling
 
-export TERM=xterm
+APP_DIR="/home/fcm-ms/token-api"
+JAR_NAME="app.jar"
 
-start_spring_boot() {
-  echo "Starting springboot application..."
-  mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" &
-  SPRING_PID=$!
+cd "$APP_DIR"
 
-  sleep 111
+echo "Starting file watcher for live reload..."
 
-  if ps -p $SPRING_PID > /dev/null; then
-    echo "Springboot application started successfully with PID: $SPRING_PID"
-    return 0
-  else
-    echo "ERROR: springboot application failed to start."
-    return 1
-  fi
+start_app() {
+  echo "Building the app..."
+  ./mvnw clean package -DskipTests
+  echo "Starting the app..."
+  java -jar target/*.jar &
+  APP_PID=$!
 }
 
-restart_spring_boot() {
-  local exit_on_failure="$1"
+start_app
 
-  if ! start_spring_boot; then
-    echo "Initial springboot startup failed."
-    if [ "$exit_on_failure" = "true" ]; then
-      exit 1
-    else
-      sleep 333
-    fi
-  fi
-}
-
-restart_spring_boot "false"
-
-echo "Start watching for file changes..."
 while true; do
-    if watch -d -t -g "ls -lR . | sha1sum"; then
-      echo "Changes detected, recompiling..."
-      mvn compile
+  # watch for file changes
+  inotifywait -r -e modify,create,delete ./src
+  echo "Changes detected. Restarting the application..."
 
-      if [ -n "$SPRING_PID" ]; then
-        echo "Stopping previous springboot instance (PID: $SPRING_PID)"
-        kill $SPRING_PID
-        wait $SPRING_PID 2> /dev/null
-      fi
+  kill $APP_PID
+  wait $APP_PID 2> /dev/null
 
-      restart_spring_boot "false"
-    fi
+  # restart
+  start_app
 done
+

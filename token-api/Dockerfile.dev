@@ -4,6 +4,7 @@ WORKDIR /home/fcm-ms/token-api
 COPY .mvn .mvn
 COPY mvnw .
 COPY pom.xml .
+RUN apt-get update && apt-get install -y inotify-tools
 RUN ./mvnw dependency:go-offline
 
 COPY src src

@@ -35,7 +35,7 @@ public class UserNotificationController {
       @Valid @RequestBody BasicNotificationRequestDTO basicNotificationRequestDTO,
       HttpServletRequest request) {
 
-    String response = "Notification not sent";
+    String response = "[DEBUG]: ";
 
     Optional<ErrorResponseDTO> existingError = StringToIntUtil.intOrErrorDTO(
       userExternalId,
@@ -46,44 +46,19 @@ public class UserNotificationController {
     if (existingError.isPresent())
       return existingError.get().toString();
 
-    /* TODO
-     *  - get list of tokens of user with externalId X
-     *  - create Notification with hardcoded title and body
-     *  - send to all tokens
-     * */
-
     List<Message> userMessages = this.userNotificationService.getMessages(
       Integer.parseInt(userExternalId), basicNotificationRequestDTO
     );
 
-    /*
-    if (userMessages.isEmpty())
-      return "No tokens found for this user";
-
-      for (int i = 0; i < userMessages.size(); i++) {
-        try {
-            response = firebaseMessaging.send(userMessages.get(i));
-            System.out.println("Message " + i + " sent successfully: " + response);
-        } catch (Exception e) {
-        e.printStackTrace();
-            System.err.println("Message " + i + " failed: " + e.getMessage());
-        }
+    for (Message m : userMessages) {
+      try {
+        response += firebaseMessaging.send(m);
+      } catch (Exception ex) {
+        response += ex.getMessage();
       }
-    return response;
-    */
-
-    try {
-      BatchResponse batchResponse = firebaseMessaging.sendAll(userMessages);
-
-      return String.format(
-        "Sent %d messages: %d succeeded, %d failed",
-        userMessages.size(),
-        batchResponse.getSuccessCount(),
-        batchResponse.getFailureCount()
-      );
-    } catch (Exception ex) {
-      return "Failed to send notifications: " + ex.getMessage();
     }
+
+    return response;
   }
 
 }

@@ -2,7 +2,7 @@ package com.fcm_ms.token_api.service;
 
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class UserNotificationService {
 
   private final TokenRepository tokenRepository;
 
-  public List<Token> getMessage(String userExternalId, BasicNotificationRequestDTO basicNotificationRequestDTO) {
+  public List<Message> getMessages(String userExternalId, BasicNotificationRequestDTO basicNotificationRequestDTO) {
     String notifTitle = basicNotificationRequestDTO.getTitle();
     String notifBody = basicNotificationRequestDTO.getBody();
 
@@ -26,21 +26,17 @@ public class UserNotificationService {
       Integer.parseInt(userExternalId)
     );
 
-    return userTokens;
-
-    /* 
-     *  - get list of tokens of user with externalId X
-     */
-    //
-    // return Message.builder()
-    //   .setToken("fsaHzzFFQkiC1AA59hFqPk:APA91bFLWuoexvXOWQnjivY18E19sXMHNuxu2vQfpfWdFGHIBe8EuPxKetW-b4hnXG5hLDvfknJt3imYCIes3IUn0A85HDL8dd_N6jrmXtRobjDtpyvWj_s")
-    //   .setNotification(
-    //     Notification.builder()
-    //       .setTitle(notifTitle)
-    //       .setBody(notifBody)
-    //     .build()
-    //   )
-    //   .putAllData(new HashMap<>())
-    //   .build();
+    return userTokens.stream()
+      .map(token -> Message.builder()
+        .setToken(token.getToken())
+        .setNotification(Notification.builder()
+          .setTitle(notifTitle)
+          .setBody(notifBody)
+          .build()
+        )
+        .putAllData(new HashMap<>())
+        .build()
+      )
+      .collect(Collectors.toList());
   }
 }

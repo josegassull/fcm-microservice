@@ -50,10 +50,11 @@ public class UserNotificationController {
      *  - send to all tokens
      * */
 
-    List<Token> userTokens = this.userNotificationService.getMessage(
+    List<Message> userMessages = this.userNotificationService.getMessages(
       userExternalId, basicNotificationRequestDTO
     );
-    return userTokens.toString();
+
+    return userMessages.toString();
 
     // try {
     //   Message message = this.userNotificationService.getMessage(userExternalId, basicNotificationRequestDTO);

@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 
 import com.fcm_ms.token_api.dto.BasicNotificationRequestDTO;
 import com.fcm_ms.token_api.service.UserNotificationService;
+import com.fcm_ms.token_api.util.StringToIntUtil;
 
 @RestController
 @RequestMapping("api/notify/user")
@@ -27,6 +28,11 @@ public class UserNotificationController {
       @Valid @RequestBody BasicNotificationRequestDTO basicNotificationRequestDTO) {
 
     String response = "Notification not sent";
+
+    if (StringToIntUtil.isValidInteger(userExternalId))
+      response = "Is valid";
+    else
+      response = "IS NOT VALID!!";
 
     /* TODO
      *  - get list of tokens of user with externalId X

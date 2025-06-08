@@ -32,7 +32,7 @@ public class StringToIntUtil {
     errors.put("Invalid format", stringName + " must be a number");
 
     return Optional.of(ErrorResponseDTO.of(
-      HttpStatus.BAD_REQUEST.value(),
+      HttpStatus.BAD_REQUEST,
       "Invalid " + stringName,
       errors,
       path

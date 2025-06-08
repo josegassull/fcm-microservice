@@ -28,13 +28,16 @@ public class GlobalExceptionHandler {
     errors.put(ex.getResourcePath(), "The requested resource was not found");
 
     ErrorResponseDTO errorResponse = ErrorResponseDTO.of(
-      HttpStatus.NOT_FOUND.value(),
+      HttpStatus.NOT_FOUND,
       "Endpoint not found",
       errors,
       request.getRequestURI()
     );
 
-    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(
+      errorResponse,
+      errorResponse._getHttpStatus()
+    );
   }
 
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -46,13 +49,16 @@ public class GlobalExceptionHandler {
     errors.put(ex.getMethod(), "This method is not supported for this endpoint");
 
     ErrorResponseDTO errorResponse = ErrorResponseDTO.of(
-      HttpStatus.METHOD_NOT_ALLOWED.value(),
+      HttpStatus.METHOD_NOT_ALLOWED,
       "Method not allowed",
       errors,
       request.getRequestURI()
     );
 
-    return new ResponseEntity<>(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);
+    return new ResponseEntity<>(
+      errorResponse,
+      errorResponse._getHttpStatus()
+    );
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -68,13 +74,16 @@ public class GlobalExceptionHandler {
     });
 
     ErrorResponseDTO errorResponse = ErrorResponseDTO.of(
-      HttpStatus.BAD_REQUEST.value(),
+      HttpStatus.BAD_REQUEST,
       "Invalid fields",
       errors,
       request.getRequestURI()
     );
 
-    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(
+      errorResponse,
+      errorResponse._getHttpStatus()
+    );
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -86,12 +95,15 @@ public class GlobalExceptionHandler {
     errors.put("requestBody", "Request body is missing or malformed");
 
     ErrorResponseDTO errorResponse = ErrorResponseDTO.of(
-      HttpStatus.BAD_REQUEST.value(),
+      HttpStatus.BAD_REQUEST,
       "Empty or invalid request body",
       errors,
       request.getRequestURI()
     );
 
-    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(
+      errorResponse,
+      errorResponse._getHttpStatus()
+    );
   }
 }

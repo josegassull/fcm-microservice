@@ -2,35 +2,37 @@ package com.fcm_ms.token_api.dto;
 
 import java.util.Map;
 import java.time.LocalDateTime;
-import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ErrorResponseDTO {
+@SuperBuilder
+public class ErrorResponseDTO extends BaseHttpResponseDTO {
 
   private LocalDateTime timestamp;
-  private int status;
   private String error;
   private Map<String, String> errors;
   private String path;
 
   public static ErrorResponseDTO of(
-      int status,
+      HttpStatus httpStatus,
       String error,
       Map<String, String> errors,
       String path) {
 
     return ErrorResponseDTO.builder()
       .timestamp(LocalDateTime.now())
-      .status(status)
       .error(error)
       .errors(errors)
       .path(path)
+      .httpStatus(new HttpStatusDetail(
+        httpStatus.name(), httpStatus.value()
+      ))
       .build();
     }
 }

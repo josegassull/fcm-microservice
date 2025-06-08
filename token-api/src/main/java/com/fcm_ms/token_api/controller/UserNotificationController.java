@@ -53,6 +53,23 @@ public class UserNotificationController {
       Integer.parseInt(userExternalId), basicNotificationRequestDTO
     );
 
+    /* TODO pass additional data in notification
+     * {
+     *  "title",
+     *  "body",
+     *  "data": {
+     *    "<key_1>": "<value_1>",
+     *    "<key_2>": "<value_2>",
+     *    ... }
+     * }
+     */
+
+    /* TODO response
+     *  - count successfully sent messages
+     *  - count failure messages
+     *  - "Notified {messagesCount} instances for user {user_external_id}"
+     */
+
     for (Message m : userMessages) {
       try {
         response += "\n" + firebaseMessaging.send(m);

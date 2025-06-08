@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import com.fcm_ms.token_api.entity.Token;
+import com.fcm_ms.token_api.entity.Device;
 
 @Builder
 @Data
@@ -16,22 +17,10 @@ public class TokenResponseDTO {
 
   private String message;
   private String description;
-  private String token;
-  private Integer userExternalId;
-  private Device device;
   private HttpStatusDetail httpStatus;
 
   public HttpStatus _getHttpStatus() {
     return HttpStatus.valueOf(this.httpStatus.getName());
-  }
-
-  @Data
-  @AllArgsConstructor
-  @NoArgsConstructor
-  public static class Device {
-
-    private String uuid;
-    private String type;
   }
 
   @Data
@@ -47,7 +36,7 @@ public class TokenResponseDTO {
       Boolean isNewToken,
       Token token,
       Integer userExternalId,
-      com.fcm_ms.token_api.entity.Device device) {
+      Device device) {
 
     String message = (isNewToken ? "Created" : "Updated existing") + " token";
     String description = "Successfully " + message.toLowerCase()
@@ -56,13 +45,8 @@ public class TokenResponseDTO {
     HttpStatus httpStatus = isNewToken ? HttpStatus.CREATED : HttpStatus.OK;
 
     return TokenResponseDTO.builder()
-      .token(token.getToken())
       .message(message)
       .description(description)
-      .userExternalId(userExternalId)
-      .device(new TokenResponseDTO.Device(
-        device.getUuid(), device.getType().name()
-      ))
       .httpStatus(new TokenResponseDTO.HttpStatusDetail(
         httpStatus.name(), httpStatus.value()
       ))

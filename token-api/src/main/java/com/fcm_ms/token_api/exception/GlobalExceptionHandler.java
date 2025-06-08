@@ -17,24 +17,6 @@ import com.fcm_ms.token_api.dto.ErrorResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(HandlerMethodValidationException.class)
-  public ResponseEntity<ErrorResponse> handlePathValidationException(
-    HandlerMethodValidationException ex,
-    HttpServletRequest request) {
-
-    Map<String, String> error = new HashMap<>();
-    error.put("path_parameter", "Invalid path parameter format: only numbers allowed");
-
-    ErrorResponse errorResponse = ErrorResponse.of(
-      HttpStatus.BAD_REQUEST.value(),
-      "Invalid path parameter",
-      error,
-      request.getRequestURI()
-    );
-
-    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-  }
-
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleBodyValidationExceptions(
       MethodArgumentNotValidException ex,

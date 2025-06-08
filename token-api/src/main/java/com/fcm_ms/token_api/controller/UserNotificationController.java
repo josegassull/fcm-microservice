@@ -13,7 +13,6 @@ import jakarta.validation.Valid;
 
 import com.fcm_ms.token_api.dto.BasicNotificationRequest;
 import com.fcm_ms.token_api.service.UserNotificationService;
-import com.fcm_ms.token_api.enums.ValidPathId;
 
 @RestController
 @RequestMapping("api/notify/user")
@@ -24,7 +23,7 @@ public class UserNotificationController {
 
   @PostMapping("{user_external_id}")
   public String notifyUser(
-      @PathVariable("user_external_id") @ValidPathId String userExternalId,
+      @PathVariable("user_external_id") String userExternalId,
       @Valid @RequestBody BasicNotificationRequest basicNotificationRequest) {
 
     String response = "Notification not sent";

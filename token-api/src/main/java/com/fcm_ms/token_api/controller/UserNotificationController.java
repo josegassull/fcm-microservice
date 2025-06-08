@@ -52,17 +52,6 @@ public class UserNotificationController {
       Integer.parseInt(userExternalId), notificationRequestDTO
     );
 
-    /* TODO pass additional data in notification
-     * {
-     *  "title",
-     *  "body",
-     *  "data": {
-     *    "<key_1>": "<value_1>",
-     *    "<key_2>": "<value_2>",
-     *    ... }
-     * }
-     */
-
     int success = 0;
     int failure = 0;
     for (Message m : userMessages) {

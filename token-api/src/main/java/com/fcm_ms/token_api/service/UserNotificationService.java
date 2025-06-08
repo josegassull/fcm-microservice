@@ -1,5 +1,6 @@
 package com.fcm_ms.token_api.service;
 
+import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +24,11 @@ public class UserNotificationService {
     String notifBody = notificationRequestDTO.getBody();
 
     List<Token> userTokens = this.tokenRepository.findTokensByUserExternalId(userExternalId);
+    Map<String, String> additionalData = new HashMap<>();
+
+    if (notificationRequestDTO.getData() != null)
+      for (Map.Entry<String, String> entry : notificationRequestDTO.getData().entrySet())
+        additionalData.put(entry.getKey(), entry.getValue());
 
     return userTokens.stream()
       .map(token -> Message.builder()
@@ -32,6 +38,7 @@ public class UserNotificationService {
           .setBody(notifBody)
           .build()
         )
+        .putAllData(additionalData)
         .build()
       )
       .collect(Collectors.toList());

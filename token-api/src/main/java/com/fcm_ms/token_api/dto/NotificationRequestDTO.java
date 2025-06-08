@@ -1,5 +1,6 @@
 package com.fcm_ms.token_api.dto;
 
+import java.util.Map;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -7,8 +8,10 @@ import lombok.Data;
 public class NotificationRequestDTO {
 
   @NotBlank(message = "Notification title is required")
-  String title;
+  private String title;
 
   @NotBlank(message = "Notification body is required")
-  String body;
+  private String body;
+
+  private Map<String, String> data;
 }

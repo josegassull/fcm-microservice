@@ -1,6 +1,6 @@
 package com.fcm_ms.token_api.dto;
 
-import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -9,28 +9,14 @@ import org.springframework.http.HttpStatus;
 import com.fcm_ms.token_api.entity.Token;
 import com.fcm_ms.token_api.entity.Device;
 
-@Builder
+@SuperBuilder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenResponseDTO {
+public class TokenResponseDTO extends BaseHttpResponseDTO {
 
   private String message;
   private String description;
-  private HttpStatusDetail httpStatus;
-
-  public HttpStatus _getHttpStatus() {
-    return HttpStatus.valueOf(this.httpStatus.getName());
-  }
-
-  @Data
-  @AllArgsConstructor
-  @NoArgsConstructor
-  public static class HttpStatusDetail {
-
-    private String name;
-    private Integer code;
-  }
 
   public static TokenResponseDTO of(
       Boolean isNewToken,
@@ -47,7 +33,7 @@ public class TokenResponseDTO {
     return TokenResponseDTO.builder()
       .message(message)
       .description(description)
-      .httpStatus(new TokenResponseDTO.HttpStatusDetail(
+      .httpStatus(new HttpStatusDetail(
         httpStatus.name(), httpStatus.value()
       ))
       .build();

@@ -1,5 +1,6 @@
 package com.fcm_ms.token_api.controller;
 
+import java.util.Optional;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.fcm_ms.token_api.dto.BasicNotificationRequestDTO;
+import com.fcm_ms.token_api.dto.ErrorResponseDTO;
 import com.fcm_ms.token_api.service.UserNotificationService;
 import com.fcm_ms.token_api.util.StringToIntUtil;
 
@@ -25,14 +28,19 @@ public class UserNotificationController {
   @PostMapping("{user_external_id}")
   public String notifyUser(
       @PathVariable("user_external_id") String userExternalId,
-      @Valid @RequestBody BasicNotificationRequestDTO basicNotificationRequestDTO) {
+      @Valid @RequestBody BasicNotificationRequestDTO basicNotificationRequestDTO,
+      HttpServletRequest request) {
 
     String response = "Notification not sent";
 
-    if (StringToIntUtil.isValidInteger(userExternalId))
-      response = "Is valid";
-    else
-      response = "IS NOT VALID!!";
+    Optional<ErrorResponseDTO> existingError = StringToIntUtil.intOrErrorDTO(
+      userExternalId,
+      "user_external_id",
+      request.getRequestURI()
+    );
+
+    if (existingError.isPresent())
+      response = existingError.get().toString();
 
     /* TODO
      *  - get list of tokens of user with externalId X

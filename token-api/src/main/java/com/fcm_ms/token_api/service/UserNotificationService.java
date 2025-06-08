@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
 import com.fcm_ms.token_api.entity.Token;
-import com.fcm_ms.token_api.dto.BasicNotificationRequestDTO;
+import com.fcm_ms.token_api.dto.NotificationRequestDTO;
 import com.fcm_ms.token_api.repository.TokenRepository;
 
 @Service
@@ -18,9 +18,9 @@ public class UserNotificationService {
 
   private final TokenRepository tokenRepository;
 
-  public List<Message> getMessages(Integer userExternalId, BasicNotificationRequestDTO basicNotificationRequestDTO) {
-    String notifTitle = basicNotificationRequestDTO.getTitle();
-    String notifBody = basicNotificationRequestDTO.getBody();
+  public List<Message> getMessages(Integer userExternalId, NotificationRequestDTO notificationRequestDTO) {
+    String notifTitle = notificationRequestDTO.getTitle();
+    String notifBody = notificationRequestDTO.getBody();
 
     List<Token> userTokens = this.tokenRepository.findTokensByUserExternalId(userExternalId);
 

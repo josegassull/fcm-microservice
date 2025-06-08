@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
 
-import com.fcm_ms.token_api.dto.BasicNotificationRequestDTO;
+import com.fcm_ms.token_api.dto.NotificationRequestDTO;
 import com.fcm_ms.token_api.dto.ErrorResponseDTO;
 import com.fcm_ms.token_api.dto.NotificationResponseDTO;
 import com.fcm_ms.token_api.service.UserNotificationService;
@@ -34,10 +34,8 @@ public class UserNotificationController {
   @PostMapping("{user_external_id}")
   public ResponseEntity<?> notifyUser(
       @PathVariable("user_external_id") String userExternalId,
-      @Valid @RequestBody BasicNotificationRequestDTO basicNotificationRequestDTO,
+      @Valid @RequestBody NotificationRequestDTO notificationRequestDTO,
       HttpServletRequest request) {
-
-    String response = "[DEBUG]: ";
 
     Optional<ErrorResponseDTO> existingError = StringToIntUtil.intOrErrorDTO(
       userExternalId,
@@ -51,7 +49,7 @@ public class UserNotificationController {
         .body(existingError.get());
 
     List<Message> userMessages = this.userNotificationService.getMessages(
-      Integer.parseInt(userExternalId), basicNotificationRequestDTO
+      Integer.parseInt(userExternalId), notificationRequestDTO
     );
 
     /* TODO pass additional data in notification
@@ -69,7 +67,7 @@ public class UserNotificationController {
     int failure = 0;
     for (Message m : userMessages) {
       try {
-        response += "\n" + firebaseMessaging.send(m);
+        firebaseMessaging.send(m);
         ++success;
       } catch (Exception ex) {
         ex.printStackTrace();

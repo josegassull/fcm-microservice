@@ -2,6 +2,46 @@
 
 An initial REST API for Firebase Cloud Messaging token management and notifications to users.
 
+## Quick Start
+
+### Requirements with recommended versions
+- Docker Engine 28.+
+- Docker Compose 2.+
+
+### Development Setup
+
+1. **Clone and navigate to project**
+```bash
+git clone https://github.com/sstefanofm/fcm-microservice.git
+cd fcm-microservice
+```
+
+2. **Start development environment**
+```bash
+docker-compose -f docker-compose.dev.yml --env-file .env.dev up -d
+```
+
+3. **Access the application**
+```http
+GET http://localhost:8080/api/hello-world
+```
+
+4. **Enter to postgres database**
+```bash
+docker exec -it fcm_ms_postgres_dev psql -U postgres_dev -d fcm_ms_dev
+```
+Postgres credentials are managed in the `/.env.dev` file
+
+4. **Stop development environment**
+```bash
+docker-compose -f docker-compose.dev.yml down
+```
+
+### Development Features
+- **Hot Reload**: Code changes in `./token-api/src` are automatically reflected
+- **Database Persistence**: Data survives container restarts
+- **Live Development**: No need to rebuild containers for code changes under `./token-api/src`
+
 ## Base URL
 
 ```
@@ -221,59 +261,6 @@ All endpoints return consistent error response formats with detailed field valid
 - **404 Not Found**: Resource not found (e.g., request to /notify/dinosaur)
 - **405 Method Not Allowed**: Method not supported for the current endpoint. The endpoint exists, but the method used is not available
 - **500 Internal Server Error**: Unexpected server errors
-
-## Docker Development Setup
-
-This project uses Docker Compose for local development with hot reload capabilities.
-
-### Services
-
-#### fcm-ms-api (Spring Boot Application)
-- **Container**: `fcm_ms_springboot_dev`
-- **Port**: `8080:8080`
-- **Features**: Live reload with volume mounting
-- **Base Image**: `maven:3.9.9-eclipse-temurin-21`
-- **Dependencies**: inotify-tools for file watching
-
-#### fcm-ms-db (PostgreSQL Database)
-- **Container**: `fcm_ms_postgres_dev`
-- **Base Image**: `postgres:17.4-alpine3.21`
-- **Port**: `5432` (internal)
-- **Data Persistence**: Named volume `postgres-data`
-- **Initialization**: Custom scripts in `./psql/init-scripts`
-
-### Configuration Files
-
-#### Environment Variables (.env.dev)
-```
-POSTGRES_DB=fcm_ms_dev
-POSTGRES_USER=postgres_dev
-POSTGRES_PASSWORD=psql_dev
-```
-
-#### Network
-- **Name**: `fcm-ms-network`
-- **Driver**: bridge
-
-### Development Features
-
-- **Hot Reload**: Source code changes in `./token-api/src` are automatically reflected
-- **Database Persistence**: Data survives container restarts via named volume
-- **Custom Entrypoint**: `docker-entrypoint.sh` handles live reload setup
-- **Dependency Caching**: Maven dependencies are cached during build
-
-### Quick Start
-
-```bash
-# start development environment
-docker compose -f docker-compose.dev.yml --env-file .env.dev up -d
-
-# stop and remove containers
-docker compose -f docker-compose.dev.yml down
-
-# enter to the postgres database
-docker exec -it fcm_ms_postgres_dev psql -U postgres_dev -d fcm_ms_dev
-```
 
 ## License
 

@@ -76,12 +76,6 @@ curl -X POST http://localhost:8080/api/token/register \
 {
   "message": "Created token",
   "description": "Successfully created token for user with external_id '1' and device with uuid '123e4567-e89b-12d3-aaaasd-4266a14174000'",
-  "token": "abc123def456ghi789",
-  "userExternalId": 67890,
-  "device": {
-    "uuid": "550e8400-e29b-41d4-a716-446655440000",
-    "type": "iOS"
-  },
   "httpStatus": {
     "name": "CREATED",
     "code": 201
@@ -95,11 +89,6 @@ curl -X POST http://localhost:8080/api/token/register \
 |-------|------|-------------|
 | `message` | String | Success message |
 | `description` | String | Detailed description of the operation |
-| `token` | String | The registered device token |
-| `userExternalId` | Number | External user identifier |
-| `device` | Object | Device information |
-| `device.uuid` | String | Device UUID |
-| `device.type` | String | Device type |
 | `httpStatus` | Object | HTTP status information |
 | `httpStatus.name` | String | HTTP status name |
 | `httpStatus.code` | Number | HTTP status code |
@@ -155,6 +144,10 @@ Content-Type: application/json
   "notifiedDevicesCounts": {
     "failure": 0,
     "success": 1
+  },
+  "httpStatus": {
+    "name": "PARTIAL_CONTENT",
+    "code": 206
   }
 }
 ```
@@ -168,6 +161,9 @@ Content-Type: application/json
 | `notifiedDevicesCounts` | Object | Notification delivery statistics |
 | `notifiedDevicesCounts.failure` | Number | Number of devices that failed to receive notification |
 | `notifiedDevicesCounts.success` | Number | Number of devices that successfully received notification |
+| `httpStatus` | Object | HTTP status information |
+| `httpStatus.name` | String | HTTP status name |
+| `httpStatus.code` | Number | HTTP status code |
 
 **Example Request:**
 ```bash
@@ -184,7 +180,8 @@ curl -X POST http://localhost:8080/api/notify/user/43 \
 ```
 
 **Status Codes:**
-- `200 OK` - Notifications **fired** successfully
+- `200 OK` - All notifications reached their destination
+- `206 PARTIAL CONTENT` - Notifications **fired** successfully, at least one failed
 - `400 Bad Request` - Invalid request body or missing required fields
 
 ---

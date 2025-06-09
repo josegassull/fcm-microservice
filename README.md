@@ -42,6 +42,63 @@ docker-compose -f docker-compose.dev.yml down
 - **Database Persistence**: Data survives container restarts
 - **Live Development**: No need to rebuild containers for code changes under `./token-api/src`
 
+## Firebase setup
+
+Read the [Firebase docs](https://firebase.google.com/docs/cloud-messaging/server#firebase-admin-sdk-for-fcm).   
+You'll need a `firebase-service-account.json` file. To obtain it:
+
+### Prerequisites
+
+- Google account
+- Android project with a valid package name
+- Web browser
+
+### Step 1: Create Firebase Project
+
+1. Navigate to [Firebase Console](https://console.firebase.google.com)
+2. Click **"Create a project"** or **"Add project"**
+3. Enter your **Project name**
+4. Click **"Continue"**
+5. Choose whether to enable Google Analytics (optional)
+   - If enabled, select or create a Google Analytics account
+6. Click **"Create project"**
+7. Wait for project creation to complete
+8. Click **"Continue"** to go to project dashboard
+
+### Step 2: Add Android App
+
+1. In your Firebase project dashboard, click the **Android icon** 📱 or **"+ Add app"** → **Android**
+2. Fill in the app registration form:
+   - **Android package name**: `com.yourcompany.yourapp` 
+     - ⚠️ Must exactly match your Android app's package name
+     - Cannot be changed later
+   - **App nickname**: Optional friendly name for identification
+3. Click **"Register app"**
+
+### Step 3: Download Android Configuration
+
+1. Click **"Download google-services.json"**
+2. Save the file to your computer
+3. **Important**: Place this file in your Android project's `app/` directory
+4. Click **"Next"** through the SDK setup instructions
+5. Click **"Continue to console"**
+
+### Step 4: Generate Service Account Key
+
+1. In your Firebase project dashboard, click the **⚙️ gear icon** → **"Project settings"**
+2. Navigate to the **"Service accounts"** tab
+3. Select **"Firebase Admin SDK"** section
+4. Choose your preferred programming language from the dropdown:
+   - Java
+5. Click **"Generate new private key"**
+6. In the confirmation dialog, click **"Generate key"**
+7. A JSON file will automatically download - this is your **service account key**
+
+### Step 5:
+
+Put **firebase-service-account.json** in `token-api/src/main/resources/firebase-service-account.json`
+
+
 ## Base URL
 
 ```

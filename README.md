@@ -2,6 +2,13 @@
 
 An initial REST API for Firebase Cloud Messaging token management and notifications to users.
 
+1. [Quickstart](#quickstart)
+2. [Firebase Setup](#firebase-setup)
+3. [Base URL](#base-url)
+4. [Endpoints](#endpoints)
+5. [Error handling](#error-handling)
+6. [License](#license)
+
 ## Quickstart
 
 ### Requirements with recommended versions

@@ -188,6 +188,22 @@ curl -X POST http://localhost:8080/api/notify/user/43 \
 
 All endpoints return consistent error response formats with detailed field validation messages.
 
+**Error Response:**
+```json
+{
+  "httpStatus": {
+    "name": "METHOD_NOT_ALLOWED",
+    "code": 405
+  },
+  "timestamp": "2025-06-09T00:26:51.099613458",
+  "error": "Method not allowed",
+  "errors": {
+    "GET": "This method is not supported for this endpoint"
+  },
+  "path": "/api/token/register"
+}
+```
+
 **Error Response Structure:**
 
 | Field | Type | Description |

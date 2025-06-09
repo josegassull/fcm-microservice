@@ -184,11 +184,27 @@ curl -X POST http://localhost:8080/api/notify/user/43 \
 - `206 PARTIAL CONTENT` - Notifications **fired** successfully, at least one failed
 - `400 Bad Request` - Invalid request body or missing required fields
 
----
-
 ## Error Handling
 
-TODO ErrorResponseDTO
+All endpoints return consistent error response formats with detailed field validation messages.
+
+**Error Response Structure:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `httpStatus` | Object | HTTP status information |
+| `httpStatus.name` | String | HTTP status name (e.g., "BAD_REQUEST") |
+| `httpStatus.code` | Number | HTTP status code (e.g., 400) |
+| `timestamp` | String | ISO timestamp of when the error occurred |
+| `error` | String | General error message |
+| `errors` | Object | Field-specific validation errors (when applicable) |
+| `path` | String | API endpoint path where the error occurred |
+
+**Common Error Scenarios:**
+- **400 Bad Request**: Missing required fields, invalid JSON format, or validation failures
+- **404 Not Found**: Resource not found (e.g., request to /notify/dinosaur)
+- **405 Method Not Allowed**: Method not supported for the current endpoint. The endpoint exists, but the method used is not available
+- **500 Internal Server Error**: Unexpected server errors
 
 ## Contributing
 

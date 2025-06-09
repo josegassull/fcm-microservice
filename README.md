@@ -140,10 +140,10 @@ Content-Type: application/json
 ```json
 {
   "timestamp": "2025-06-08T22:12:53.740323358",
-  "message": "Fired notifications for 1 instances of user 43",
+  "message": "Fired notifications for '10' instances of user with external_id '43'",
   "notifiedDevicesCounts": {
-    "failure": 0,
-    "success": 1
+    "failure": 4,
+    "success": 6
   },
   "httpStatus": {
     "name": "PARTIAL_CONTENT",

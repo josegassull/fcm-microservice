@@ -33,7 +33,7 @@ public class NotificationResponseDTO extends BaseHttpResponseDTO {
 
     return NotificationResponseDTO.builder()
       .timestamp(LocalDateTime.now())
-      .message("Fired notifications for " + totalMessages + " instances of user " + userExternalId)
+      .message("Fired notifications for '" + totalMessages + "' instances of user with external_id '" + userExternalId + "'")
       .notifiedDevicesCounts(counts)
       .httpStatus(new HttpStatusDetail(
         httpStatus.name(), httpStatus.value()

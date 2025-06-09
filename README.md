@@ -2,7 +2,7 @@
 
 An initial REST API for Firebase Cloud Messaging token management and notifications to users.
 
-## Quick Start
+## Quickstart
 
 ### Requirements with recommended versions
 - Docker Engine 28.+
@@ -18,19 +18,19 @@ cd fcm-microservice
 
 2. **Start development environment**
 ```bash
-docker-compose -f docker-compose.dev.yml --env-file .env.dev up -d
+docker compose -f docker-compose.dev.yml --env-file .env.dev up -d
 ```
 
-3. **Access the application**
+3. **Test if the REST API is up and running**
 ```http
 GET http://localhost:8080/api/hello-world
 ```
 
-4. **Enter to postgres database**
+4. **Enter the Postgres database**
 ```bash
 docker exec -it fcm_ms_postgres_dev psql -U postgres_dev -d fcm_ms_dev
 ```
-Postgres credentials are managed in the `/.env.dev` file
+Postgres credentials are managed in the `.env.dev` file
 
 4. **Stop development environment**
 ```bash

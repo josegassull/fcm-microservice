@@ -101,9 +101,11 @@ You'll need a `firebase-service-account.json` file. To obtain it:
 6. In the confirmation dialog, click **"Generate key"**
 7. A JSON file will automatically download - this is your **service account key**
 
-### Step 5:
+### Step 5: **firebase-service-account.json**
 
-Put **firebase-service-account.json** in `token-api/src/main/resources/firebase-service-account.json`
+Put the file in `token-api/src/main/resources/firebase-service-account.json` ⚠️ with the exact same filename.
+
+If you want other filename, change the code in `token-api/src/main/java/com/fcm_ms/token_api/config/FirebaseConfig.java`.
 
 
 ## Base URL

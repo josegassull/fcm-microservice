@@ -1,5 +1,6 @@
 package com.fcm_ms.token_api.controller;
 
+import java.net.URI;
 import java.util.Optional;
 import java.util.List;
 import com.google.firebase.messaging.Message;
@@ -30,6 +31,12 @@ public class UserNotificationController {
 
   private final FirebaseMessaging firebaseMessaging;
   private final UserNotificationService userNotificationService;
+
+  @PostMapping
+  public ResponseEntity<String> notifyUsers (){
+    URI location = URI.create("/api/notify/user");
+    return ResponseEntity.created(location).body("Notificación registrada");
+  }
 
   @PostMapping("{user_external_id}")
   public ResponseEntity<?> notifyUser(
@@ -69,6 +76,36 @@ public class UserNotificationController {
       Integer.parseInt(userExternalId),
       success, failure
     );
+
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
+    System.out.println(notifResponse.toString());
 
     return new ResponseEntity<>(
       notifResponse,

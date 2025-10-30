@@ -6,7 +6,7 @@ services:
     build:
       context: token-api
       dockerfile: Dockerfile.dev
-    command: sh ./docker-entrypoint.sh # live reload
+    command: ./docker-entrypoint.sh # live reload
     ports:
       - "8080:8080"
     # links: # deprecated

@@ -28,7 +28,7 @@ public class NotificationResponseDTO extends BaseHttpResponseDTO {
     );
 
     HttpStatus httpStatus = failureDevices == 0 ?
-      HttpStatus.OK :
+      HttpStatus.CREATED :
       HttpStatus.PARTIAL_CONTENT;
 
     return NotificationResponseDTO.builder()

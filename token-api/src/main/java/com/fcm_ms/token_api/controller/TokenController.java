@@ -4,10 +4,7 @@ import java.util.HashMap;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
 
@@ -31,5 +28,14 @@ public class TokenController {
       tokenResponse,
       tokenResponse._getHttpStatus()
     );
+  }
+
+  @DeleteMapping("/user/{userExternalId}/device/{deviceUuid}")
+  public ResponseEntity<Void> unassignToken(
+          @PathVariable Integer userExternalId,
+          @PathVariable String deviceUuid) {
+
+    this.tokenService.unassignToken(userExternalId, deviceUuid);
+    return ResponseEntity.noContent().build(); // 204
   }
 }

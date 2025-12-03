@@ -21,4 +21,10 @@ public class UserService {
     return this.userRepository.findByExternalId(externalId)
       .orElseGet(() -> this.userRepository.save(User.of(externalId)));
   }
+
+  @Transactional
+  public User findByExternalIdOrThrow(Integer externalId) {
+    return this.userRepository.findByExternalId(externalId)
+            .orElseThrow(() -> new IllegalArgumentException("User does not exist"));
+  }
 }

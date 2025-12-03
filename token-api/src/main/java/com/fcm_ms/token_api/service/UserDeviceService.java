@@ -2,6 +2,7 @@ package com.fcm_ms.token_api.service;
 
 import java.util.Optional;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -21,5 +22,11 @@ public class UserDeviceService {
 
     if (!existingUD.isPresent())
       this.userDeviceRepository.save(UserDevice.of(user, device));
+  }
+
+  @Transactional
+  public void deleteRelation(User user, Device device) {
+    this.userDeviceRepository.findByUserAndDevice(user, device)
+            .ifPresent(ud -> this.userDeviceRepository.delete(ud));
   }
 }

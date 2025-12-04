@@ -74,21 +74,4 @@ public class TokenService {
       device
     );
   }
-
-  @Transactional
-  public void unassignToken(Integer userExternalId, String deviceUuid) {
-
-    // Validar usuario
-    User user = this.userService.findByExternalIdOrThrow(userExternalId);
-
-    // Validar device
-    Device device = this.deviceService.findByUuid(deviceUuid)
-            .orElseThrow(() -> new IllegalArgumentException("Device does not exist"));
-
-    // Remover relación User–Device (esto des-asigna el token)
-    this.userDeviceService.deleteRelation(user, device);
-
-    // Token persiste porque está asociado a Device,
-    // solo deja de estar asociado al User via UserDevice.
-  }
 }

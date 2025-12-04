@@ -2,6 +2,7 @@ package com.fcm_ms.token_api.controller;
 
 import java.util.HashMap;
 
+import com.fcm_ms.token_api.service.UserDeviceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +29,5 @@ public class TokenController {
       tokenResponse,
       tokenResponse._getHttpStatus()
     );
-  }
-
-  @DeleteMapping("/user/{userExternalId}/device/{deviceUuid}")
-  public ResponseEntity<Void> unassignToken(
-          @PathVariable Integer userExternalId,
-          @PathVariable String deviceUuid) {
-
-    this.tokenService.unassignToken(userExternalId, deviceUuid);
-    return ResponseEntity.noContent().build(); // 204
   }
 }

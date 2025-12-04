@@ -16,6 +16,8 @@ import com.fcm_ms.token_api.repository.UserDeviceRepository;
 public class UserDeviceService {
 
   private final UserDeviceRepository userDeviceRepository;
+  private final UserService userService;
+  private final DeviceService deviceService;
 
   public void saveIfNotExists(User user, Device device) {
     Optional<UserDevice> existingUD = this.userDeviceRepository.findByUserAndDevice(user, device);
@@ -25,8 +27,16 @@ public class UserDeviceService {
   }
 
   @Transactional
-  public void deleteRelation(User user, Device device) {
+  public void deleteRelation(Integer userExternalId, String deviceUuid) {
+    User user = this.userService.findByExternalIdOrThrow(userExternalId);
+
+    Device device = this.deviceService.findByUuid(deviceUuid)
+            .orElseThrow(() -> new IllegalArgumentException("Device does not exist"));
+
     this.userDeviceRepository.findByUserAndDevice(user, device)
             .ifPresent(ud -> this.userDeviceRepository.delete(ud));
+    //TODO: preguntar si al no quedar mas usuarios en el dispositvio se debe borrar solo el token o tambien el dispositivo?
+    //TODO: según esto, manejar a continuación lo que deba pasar:
+    if(device.get)
   }
 }

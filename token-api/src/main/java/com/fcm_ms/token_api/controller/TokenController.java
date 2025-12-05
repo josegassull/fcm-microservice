@@ -21,6 +21,8 @@ public class TokenController {
   private final TokenService tokenService;
 
   @PostMapping("register")
+  //todo: sacar el cross origins
+  @CrossOrigin(origins = "*")
   public ResponseEntity<TokenResponseDTO> registerNewToken(@Valid @RequestBody TokenRequestDTO tokenRequest) {
     Boolean isCreated = this.tokenService.registerToken(tokenRequest);
     TokenResponseDTO tokenResponse = this.tokenService.getTokenResponse(tokenRequest, isCreated);

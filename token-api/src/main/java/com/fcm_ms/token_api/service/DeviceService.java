@@ -30,4 +30,10 @@ public class DeviceService {
     return this.findByUuid(device.getUuid())
       .orElseGet(() -> this.deviceRepository.save(device));
   }
+
+  @Transactional
+  public void deleteById(Long id) {
+    this.deviceRepository.deleteById(id);
+  }
+
 }

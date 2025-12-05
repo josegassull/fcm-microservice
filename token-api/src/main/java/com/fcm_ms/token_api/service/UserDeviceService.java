@@ -35,8 +35,16 @@ public class UserDeviceService {
 
     this.userDeviceRepository.findByUserAndDevice(user, device)
             .ifPresent(ud -> this.userDeviceRepository.delete(ud));
-    //TODO: preguntar si al no quedar mas usuarios en el dispositvio se debe borrar solo el token o tambien el dispositivo?
-    //TODO: según esto, manejar a continuación lo que deba pasar:
-    if(device.get)
+
+    if (!this.hasUser(deviceUuid)) {
+      this.deviceService.deleteById(device.getId());
+    }
+  }
+
+  public boolean hasUser(String deviceUuid) {
+    Device device = this.deviceService.findByUuid(deviceUuid)
+            .orElseThrow(() -> new IllegalArgumentException("Device does not exist"));
+
+    return this.userDeviceRepository.existsByDevice(device);
   }
 }

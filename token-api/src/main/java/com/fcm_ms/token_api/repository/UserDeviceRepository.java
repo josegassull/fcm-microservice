@@ -11,4 +11,5 @@ import com.fcm_ms.token_api.entity.UserDevice;
 public interface UserDeviceRepository extends JpaRepository<UserDevice, Long> {
 
   Optional<UserDevice> findByUserAndDevice(User user, Device device);
+  boolean existsByDevice(Device device);
 }

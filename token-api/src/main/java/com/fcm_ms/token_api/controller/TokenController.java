@@ -1,9 +1,5 @@
 package com.fcm_ms.token_api.controller;
 
-import java.util.HashMap;
-
-import com.fcm_ms.token_api.service.UserDeviceService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +16,8 @@ public class TokenController {
 
   private final TokenService tokenService;
 
+  //TODO: SACAR EL CROSS
+  @CrossOrigin(origins = "*")
   @PostMapping("register")
   public ResponseEntity<TokenResponseDTO> registerNewToken(@Valid @RequestBody TokenRequestDTO tokenRequest) {
     Boolean isCreated = this.tokenService.registerToken(tokenRequest);

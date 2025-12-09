@@ -32,8 +32,8 @@ public class DeviceService {
   }
 
   @Transactional
-  public void deleteById(Long id) {
-    this.deviceRepository.deleteById(id);
+  public void deleteByUuid(String id) {
+    this.deviceRepository.deleteByUuid(id);
   }
 
 }

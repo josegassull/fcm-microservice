@@ -37,7 +37,7 @@ public class UserDeviceService {
             .ifPresent(ud -> this.userDeviceRepository.delete(ud));
 
     if (!this.hasUser(deviceUuid)) {
-      this.deviceService.deleteById(device.getId());
+      this.deviceService.deleteByUuid(device.getUuid());
     }
   }
 

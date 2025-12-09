@@ -18,7 +18,7 @@ public class DeviceController {
     @DeleteMapping("unregister/{deviceUuid}")
     public ResponseEntity<Void> deleteDevice(@PathVariable String deviceUuid) {
 
-        this.deviceService.deleteById(deviceUuid);
+        this.deviceService.deleteByUuid(deviceUuid);
         return ResponseEntity.noContent().build(); // 204
     }
 }

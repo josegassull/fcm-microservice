@@ -8,4 +8,5 @@ import com.fcm_ms.token_api.entity.Device;
 public interface DeviceRepository extends JpaRepository<Device, Long> {
 
   Optional<Device> findByUuid(String uuid);
+  void deleteByUuid(String uuid);
 }

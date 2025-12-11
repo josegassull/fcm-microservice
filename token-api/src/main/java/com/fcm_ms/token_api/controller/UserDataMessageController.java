@@ -1,6 +1,7 @@
 package com.fcm_ms.token_api.controller;
 
 import java.util.Optional;
+import java.util.Collections;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,7 @@ public class UserDataMessageController {
     if (existingError.isPresent())
       return new ResponseEntity<>(
         existingError.get(),
-        HttpStatus.BAD_REQUEST
+        existingError.get()._getHttpStatus()
       );
 
     MulticastMessage message = this.userDataMessageService.getMulticastDataMessage(
@@ -62,9 +63,17 @@ public class UserDataMessageController {
       total = response.getResponses().size();
     } catch (Exception ex) {
       ex.printStackTrace();
-      return new ResponseEntity<>(
+
+      ErrorResponseDTO errorResponseDTO = ErrorResponseDTO.of(
+        HttpStatus.INTERNAL_SERVER_ERROR,
         "There was an error sending the data message to the user",
-        HttpStatus.INTERNAL_SERVER_ERROR
+        Collections.emptyMap(),
+        request.getRequestURI()
+      );
+
+      return new ResponseEntity<>(
+        errorResponseDTO,
+        errorResponseDTO._getHttpStatus()
       );
     }
 

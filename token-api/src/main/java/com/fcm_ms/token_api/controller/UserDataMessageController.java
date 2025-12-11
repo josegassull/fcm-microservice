@@ -3,6 +3,7 @@ package com.fcm_ms.token_api.controller;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import com.google.firebase.messaging.BatchResponse;
 import com.fcm_ms.token_api.util.StringToIntUtil;
 import com.fcm_ms.token_api.dto.ErrorResponseDTO;
 import com.fcm_ms.token_api.dto.DataMessageRequestDTO;
+import com.fcm_ms.token_api.dto.NotificationResponseDTO;
 import com.fcm_ms.token_api.service.UserDataMessageService;
 
 @RestController
@@ -29,7 +31,7 @@ public class UserDataMessageController {
   private final UserDataMessageService userDataMessageService;
 
   @PostMapping("{user_external_id}")
-  public String dataMessageUser(
+  public ResponseEntity<?> dataMessageUser(
     @PathVariable("user_external_id") String userExternalId,
     @Valid @RequestBody DataMessageRequestDTO dataMessageRequestDTO,
     HttpServletRequest request) {
@@ -41,7 +43,10 @@ public class UserDataMessageController {
     );
 
     if (existingError.isPresent())
-      return "Error";
+      return new ResponseEntity<>(
+        existingError.get(),
+        HttpStatus.BAD_REQUEST
+      );
 
     MulticastMessage message = this.userDataMessageService.getMulticastDataMessage(
       Integer.parseInt(userExternalId), dataMessageRequestDTO
@@ -57,11 +62,22 @@ public class UserDataMessageController {
       total = response.getResponses().size();
     } catch (Exception ex) {
       ex.printStackTrace();
-      /* TODO */
-      return "INTERNAL SERVER ERROR";
+      return new ResponseEntity<>(
+        "There was an error sending the data message to the user",
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
 
-    return "HEllo " + success + " " + failure + " " + total;
+    NotificationResponseDTO notifResponse = NotificationResponseDTO.of(
+      total,
+      Integer.parseInt(userExternalId),
+      success, failure
+    );
+
+    return new ResponseEntity<>(
+      notifResponse,
+      notifResponse._getHttpStatus()
+    );
   }
 
 }

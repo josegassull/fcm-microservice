@@ -42,7 +42,9 @@ public class UserDataMessageController {
     if (existingError.isPresent())
       return "Error";
 
-    MulticastMessage message = this.userDataMessageService.getMulticastDataMessage(dataMessageRequestDTO);
+    MulticastMessage message = this.userDataMessageService.getMulticastDataMessage(
+      Integer.parseInt(userExternalId), dataMessageRequestDTO
+    );
 
     return "HEllo";
   }

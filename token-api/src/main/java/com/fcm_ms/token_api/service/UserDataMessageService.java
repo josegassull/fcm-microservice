@@ -2,11 +2,14 @@ package com.fcm_ms.token_api.service;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import com.google.firebase.messaging.MulticastMessage;
 import lombok.RequiredArgsConstructor;
 
+import com.fcm_ms.token_api.entity.Token;
 import com.fcm_ms.token_api.repository.TokenRepository;
 import com.fcm_ms.token_api.dto.DataMessageRequestDTO;
 
@@ -17,7 +20,16 @@ public class UserDataMessageService {
   private final TokenRepository tokenRepository;
 
   public MulticastMessage getMulticastDataMessage(
+    Integer userExternalId,
     DataMessageRequestDTO dataMessageRequestDTO) {
+
+    /* TODO max 500 tokens */
+
+    Collection<String> tokenCollection = this.tokenRepository
+      .findTokensByUserExternalId(userExternalId)
+      .stream()
+      .map(Token::getToken)
+      .collect(Collectors.toList());
 
     Map<String, String> data = new HashMap<>();
 
@@ -25,7 +37,7 @@ public class UserDataMessageService {
       data.put(entry.getKey(), entry.getValue());
 
     return MulticastMessage.builder()
-      .addToken("test")
+      .addAllTokens(tokenCollection)
       .putAllData(data)
       .build();
   }

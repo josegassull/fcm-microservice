@@ -12,10 +12,12 @@ import lombok.RequiredArgsConstructor;
 import com.google.firebase.messaging.FirebaseMessaging;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
+import com.google.firebase.messaging.MulticastMessage;
 
 import com.fcm_ms.token_api.util.StringToIntUtil;
 import com.fcm_ms.token_api.dto.ErrorResponseDTO;
 import com.fcm_ms.token_api.dto.DataMessageRequestDTO;
+import com.fcm_ms.token_api.service.UserDataMessageService;
 
 @RestController
 @RequestMapping("api/data-message/user")
@@ -23,6 +25,7 @@ import com.fcm_ms.token_api.dto.DataMessageRequestDTO;
 public class UserDataMessageController {
 
   private final FirebaseMessaging firebaseMessaging;
+  private final UserDataMessageService userDataMessageService;
 
   @PostMapping("{user_external_id}")
   public String dataMessageUser(
@@ -38,6 +41,8 @@ public class UserDataMessageController {
 
     if (existingError.isPresent())
       return "Error";
+
+    MulticastMessage message = this.userDataMessageService.getMulticastDataMessage(dataMessageRequestDTO);
 
     return "HEllo";
   }

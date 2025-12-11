@@ -13,6 +13,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
 import com.google.firebase.messaging.MulticastMessage;
+import com.google.firebase.messaging.BatchResponse;
 
 import com.fcm_ms.token_api.util.StringToIntUtil;
 import com.fcm_ms.token_api.dto.ErrorResponseDTO;
@@ -46,7 +47,21 @@ public class UserDataMessageController {
       Integer.parseInt(userExternalId), dataMessageRequestDTO
     );
 
-    return "HEllo";
+    int success = 0;
+    int failure = 0;
+    int total = 0;
+    try {
+      BatchResponse response = this.firebaseMessaging.sendEachForMulticast(message);
+      success = response.getSuccessCount();
+      failure = response.getFailureCount();
+      total = response.getResponses().size();
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      /* TODO */
+      return "INTERNAL SERVER ERROR";
+    }
+
+    return "HEllo " + success + " " + failure + " " + total;
   }
 
 }

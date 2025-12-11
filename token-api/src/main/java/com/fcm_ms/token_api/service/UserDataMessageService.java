@@ -23,12 +23,11 @@ public class UserDataMessageService {
     Integer userExternalId,
     DataMessageRequestDTO dataMessageRequestDTO) {
 
-    /* TODO max 500 tokens */
-
     Collection<String> tokenCollection = this.tokenRepository
       .findTokensByUserExternalId(userExternalId)
       .stream()
       .map(Token::getToken)
+      .limit(500) /* firebase allows max 500 tokens */
       .collect(Collectors.toList());
 
     Map<String, String> data = new HashMap<>();

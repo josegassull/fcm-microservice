@@ -45,7 +45,11 @@ public class SecurityConfig {
           "/api/user-device/**",
           "/api/device/**")
         .permitAll()
-      );
+        .anyRequest().permitAll()
+      )
+      .httpBasic(AbstractHttpConfigurer::disable)
+      .formLogin(AbstractHttpConfigurer::disable);
+
     return http.build();
   }
 }

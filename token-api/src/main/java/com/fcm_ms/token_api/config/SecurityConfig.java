@@ -17,7 +17,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-  @Value("${cors.allowed-origins}")
+  @Value("${app.cors.allowed-origins}")
   private String[] allowedOrigins;
 
   @Bean

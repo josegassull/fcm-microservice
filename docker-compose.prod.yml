@@ -1,0 +1,55 @@
+services:
+  fcm-ms-api:
+    container_name: fcm_ms_springboot_prod
+    build:
+      context: token-api
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - fcm-ms-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://fcm_ms_postgres_prod:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      fcm-ms-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  fcm-ms-db:
+    container_name: fcm_ms_postgres_prod
+    build:
+      context: psql
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    ports:
+      - "5432"
+    volumes:
+      - postgres-data-prod:/var/lib/postgresql/data
+      - ./psql/init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - fcm-ms-network
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-data-prod:
+
+networks:
+  fcm-ms-network:
+    driver: bridge

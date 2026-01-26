@@ -10,9 +10,9 @@ import org.springframework.data.repository.query.Param;
 import com.fcm_ms.token_api.entity.Device;
 import com.fcm_ms.token_api.entity.Token;
 
-public interface TokenRepository extends JpaRepository<Token, Long> {
+public interface TokenRepository extends JpaRepository<Token, Integer> {
 
-  Optional<Token> findByDeviceId(Long deviceId);
+  Optional<Token> findByDeviceId(Integer deviceId);
 
   @Query(value = """
     SELECT f.* AS token
